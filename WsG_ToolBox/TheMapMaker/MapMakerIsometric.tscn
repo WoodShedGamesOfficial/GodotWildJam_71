@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://dg5bosf2p7unp"]
+
+[ext_resource type="Texture2D" uid="uid://c25bf70g4k85m" path="res://Global_Modules/GreyBoxIdometric_A.png" id="1_fnl7f"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_exi0w"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_quaqs"]
+texture = ExtResource("1_fnl7f")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+
+[sub_resource type="TileSet" id="TileSet_r34qa"]
+tile_shape = 1
+tile_size = Vector2i(112, 55)
+occlusion_layer_0/light_mask = 1
+physics_layer_0/collision_layer = 1
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_exi0w")
+terrain_set_0/mode = 0
+sources/1 = SubResource("TileSetAtlasSource_quaqs")
+
+[node name="MapMakerIsometric" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_r34qa")
+format = 2
+layer_0/name = "Walls"
+layer_0/y_sort_enabled = true
