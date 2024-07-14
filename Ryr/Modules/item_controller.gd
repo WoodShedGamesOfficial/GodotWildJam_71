@@ -18,6 +18,6 @@ func initialize(item_id : ItemId.Id):
 
 func on_interacted():
 	print("You get " , id)
-	SignalManager.on_item_acquired.emit(id)
+	SignalManager.on_item_given.emit(self)
 	self.queue_free()
 

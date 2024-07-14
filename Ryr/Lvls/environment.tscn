@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://clvadwvxdgw7u"]
+[gd_scene load_steps=27 format=3 uid="uid://clvadwvxdgw7u"]
 
 [ext_resource type="Texture2D" uid="uid://dhqbvajf1lvxb" path="res://Ryr/Assets/isometric tileset/spritesheet.png" id="1_r800s"]
 [ext_resource type="Script" path="res://Ryr/Modules/character_controller.gd" id="2_j2vsg"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://d2wwijgmyfb27" path="res://Ryr/Assets/isometric tileset/critters/boar/boar_NE_run_2.png" id="11_frtht"]
 [ext_resource type="Texture2D" uid="uid://dsv0v45phmolt" path="res://Ryr/Assets/isometric tileset/critters/boar/boar_NE_run_3.png" id="12_gl1kk"]
 [ext_resource type="PackedScene" uid="uid://cwyhhwt14lu8j" path="res://Ryr/Lvls/interactor_area.tscn" id="13_5h7th"]
+[ext_resource type="Script" path="res://Ryr/Modules/inventory_controller.gd" id="14_kc561"]
 [ext_resource type="PackedScene" uid="uid://dregduxx5nhed" path="res://Ryr/Lvls/item_controller.tscn" id="14_ue5ff"]
 [ext_resource type="PackedScene" uid="uid://b7hfoh4v5thi" path="res://Ryr/Lvls/inventory_panel_ui.tscn" id="16_eh6q7"]
 
@@ -600,6 +601,9 @@ shadow_enabled = true
 texture = SubResource("GradientTexture2D_hwpu6")
 
 [node name="InteractorArea" parent="CharacterBody2D" instance=ExtResource("13_5h7th")]
+
+[node name="InventoryController" type="Node2D" parent="CharacterBody2D"]
+script = ExtResource("14_kc561")
 
 [node name="Ground" type="TileMap" parent="."]
 y_sort_enabled = true
