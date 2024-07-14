@@ -1,0 +1,9 @@
+[gd_scene load_steps=4 format=3 uid="uid://djya1dwhod731"]
+
+[ext_resource type="Script" path="res://Ryr/Globals/ConfigurationManager.gd" id="1_i742y"]
+[ext_resource type="Resource" uid="uid://svxk4e8jhjsh" path="res://Ryr/Assets/key_configuration.tres" id="2_k3kkr"]
+[ext_resource type="Resource" uid="uid://dks18ocm0tfef" path="res://Ryr/Assets/note_configuration.tres" id="3_uxx5i"]
+
+[node name="ConfigurationManager" type="Node"]
+script = ExtResource("1_i742y")
+item_configuration_list = Array[Resource("res://Ryr/Modules/ItemConfiguration.gd")]([ExtResource("2_k3kkr"), ExtResource("3_uxx5i")])

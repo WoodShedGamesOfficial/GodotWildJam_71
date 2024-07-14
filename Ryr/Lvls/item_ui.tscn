@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cjs7uimnjiwgn"]
+
+[ext_resource type="Texture2D" uid="uid://cobx6c77opf2j" path="res://icon.svg" id="1_sj5fy"]
+[ext_resource type="Script" path="res://Ryr/Modules/item_ui.gd" id="2_wri8x"]
+
+[node name="ItemUI" type="TextureRect"]
+custom_minimum_size = Vector2(65, 65)
+size_flags_vertical = 4
+texture = ExtResource("1_sj5fy")
+expand_mode = 1
+script = ExtResource("2_wri8x")
