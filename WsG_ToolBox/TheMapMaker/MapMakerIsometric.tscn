@@ -1,0 +1,78 @@
+[gd_scene load_steps=11 format=3 uid="uid://dg5bosf2p7unp"]
+
+[ext_resource type="Texture2D" uid="uid://c25bf70g4k85m" path="res://Global_Modules/GreyBoxIdometric_A.png" id="1_fnl7f"]
+[ext_resource type="Texture2D" uid="uid://be12voh4j0rco" path="res://K9/Modules/2D/EnviromentalModules/CarpetFloorA.png" id="2_negxm"]
+[ext_resource type="Texture2D" uid="uid://1s8qv3yxy3e1" path="res://K9/Modules/2D/EnviromentalModules/Grass_A.png" id="2_vp8gi"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g3rjr"]
+texture = ExtResource("2_negxm")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hi3gn"]
+texture = ExtResource("2_vp8gi")
+texture_region_size = Vector2i(512, 512)
+0:0/next_alternative_id = 4
+0:0/0 = 0
+0:0/1 = 1
+0:0/1/modulate = Color(0.0392157, 0.631373, 0.247059, 1)
+0:0/2 = 2
+0:0/2/modulate = Color(0, 1, 0, 1)
+0:0/3 = 3
+0:0/3/modulate = Color(0, 0.372549, 0, 1)
+
+[sub_resource type="TileSet" id="TileSet_0ci1i"]
+tile_size = Vector2i(512, 512)
+sources/1 = SubResource("TileSetAtlasSource_g3rjr")
+sources/3 = SubResource("TileSetAtlasSource_hi3gn")
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_exi0w"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_6vmla"]
+polygon = PackedVector2Array(0, -27.5, -56, 0, 0, 27.5, 56, 0)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_quaqs"]
+texture = ExtResource("1_fnl7f")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_6vmla")
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(1, -55, -50, -33, -55, 27.5, 3.5, 57, 53.5, 23, 52, -34)
+
+[sub_resource type="TileSet" id="TileSet_r34qa"]
+tile_shape = 1
+tile_size = Vector2i(112, 55)
+occlusion_layer_0/light_mask = 1
+physics_layer_0/collision_layer = 1
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_exi0w")
+terrain_set_0/mode = 0
+sources/1 = SubResource("TileSetAtlasSource_quaqs")
+
+[node name="MapMakerIsometric" type="Node2D"]
+
+[node name="Floors" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_0ci1i")
+format = 2
+
+[node name="Walls" type="TileMap" parent="."]
+y_sort_enabled = true
+tile_set = SubResource("TileSet_r34qa")
+format = 2
+layer_0/name = "Walls"
+layer_0/y_sort_enabled = true
