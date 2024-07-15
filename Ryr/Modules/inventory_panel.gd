@@ -3,6 +3,7 @@ extends Control
 class_name InventoryPanelUI
 
 @export var item_ui_list : Array[ItemUI]
+@onready var item_detail_popup = $"../../../ItemDetailPopup"
 
 var selected_index : int = 0
 
@@ -15,10 +16,19 @@ func _ready():
 	item_ui_list[selected_index].set_selected(true)
 
 func _process(delta):
+	if item_detail_popup.visible == true : return
+	
 	if Input.is_action_just_pressed("CycleRight") :
 		cycle_through_item(1)
 	elif Input.is_action_just_pressed("CycleLeft") :
 		cycle_through_item(-1)
+	
+	if Input.is_action_just_pressed("Inspect"):
+		if !item_ui_list[selected_index].is_empty : 
+			for item_config in ConfigurationManager.item_configuration_list :
+				if item_config.item_id == item_ui_list[selected_index].item_id :
+					item_detail_popup.initialize(item_config)
+					return
 
 func on_item_acquired(item_id : ItemId.Id):
 	for item_ui in item_ui_list :

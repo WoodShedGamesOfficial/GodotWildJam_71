@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://clvadwvxdgw7u"]
+[gd_scene load_steps=28 format=3 uid="uid://clvadwvxdgw7u"]
 
 [ext_resource type="Texture2D" uid="uid://dhqbvajf1lvxb" path="res://Ryr/Assets/isometric tileset/spritesheet.png" id="1_r800s"]
 [ext_resource type="Script" path="res://Ryr/Modules/character_controller.gd" id="2_j2vsg"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" path="res://Ryr/Modules/inventory_controller.gd" id="14_kc561"]
 [ext_resource type="PackedScene" uid="uid://dregduxx5nhed" path="res://Ryr/Lvls/item_controller.tscn" id="14_ue5ff"]
 [ext_resource type="PackedScene" uid="uid://b7hfoh4v5thi" path="res://Ryr/Lvls/inventory_panel_ui.tscn" id="16_eh6q7"]
+[ext_resource type="PackedScene" uid="uid://7ytrn8jf4nj4" path="res://Ryr/Lvls/item_detail_popup.tscn" id="18_jmblk"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_mb0kd"]
 animations = [{
@@ -666,3 +667,6 @@ theme_override_constants/margin_bottom = 25
 
 [node name="InventoryPanelUI" parent="CanvasLayer/MarginContainer" instance=ExtResource("16_eh6q7")]
 layout_mode = 2
+
+[node name="ItemDetailPopup" parent="." instance=ExtResource("18_jmblk")]
+visible = false

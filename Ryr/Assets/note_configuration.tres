@@ -7,5 +7,6 @@
 script = ExtResource("1_2ub03")
 item_id = 2
 item_name = "Ordinary Note"
+description = "Something written here....."
 icon = ExtResource("1_vugam")
 sprite = ExtResource("1_vugam")
