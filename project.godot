@@ -19,7 +19,7 @@ config/icon="res://icon.svg"
 
 
 K9GlobalItemList="*res://K9/Globals/TxtFiles/Item_List.gd"
-=======
+
 SignalManager="*res://Ryr/Globals/SignalManager.gd"
 ConfigurationManager="*res://Ryr/Globals/ConfigurationManager.tscn"
 
