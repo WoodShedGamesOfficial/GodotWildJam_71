@@ -1,8 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://dg5bosf2p7unp"]
+[gd_scene load_steps=18 format=3 uid="uid://dg5bosf2p7unp"]
 
 [ext_resource type="Texture2D" uid="uid://c25bf70g4k85m" path="res://Global_Modules/GreyBoxIdometric_A.png" id="1_fnl7f"]
 [ext_resource type="Texture2D" uid="uid://be12voh4j0rco" path="res://K9/Modules/2D/EnviromentalModules/CarpetFloorA.png" id="2_negxm"]
 [ext_resource type="Texture2D" uid="uid://1s8qv3yxy3e1" path="res://K9/Modules/2D/EnviromentalModules/Grass_A.png" id="2_vp8gi"]
+[ext_resource type="Texture2D" uid="uid://dhr1m73f6y7km" path="res://K9/Modules/2D/EnviromentalModules/Floor_A.png" id="4_b5rgq"]
+[ext_resource type="Texture2D" uid="uid://cducth0but37u" path="res://K9/Modules/2D/EnviromentalModules/Floor_B.png" id="5_ow70a"]
+[ext_resource type="Texture2D" uid="uid://bptrles6g2grp" path="res://K9/Modules/2D/EnviromentalModules/Floor_C.png" id="6_o20am"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g3rjr"]
 texture = ExtResource("2_negxm")
@@ -55,14 +58,51 @@ texture_region_size = Vector2i(128, 128)
 0:0/0/physics_layer_0/angular_velocity = 0.0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(1, -55, -50, -33, -55, 27.5, 3.5, 57, 53.5, 23, 52, -34)
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3p4uh"]
+texture = ExtResource("4_b5rgq")
+texture_region_size = Vector2i(128, 128)
+0:0/next_alternative_id = 2
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/1 = 1
+0:0/1/flip_h = true
+0:0/1/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/1/physics_layer_0/angular_velocity = 0.0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_43tuo"]
+texture = ExtResource("5_ow70a")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mntdu"]
+texture = ExtResource("6_o20am")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fxbjq"]
+texture = ExtResource("5_ow70a")
+texture_region_size = Vector2i(128, 64)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+
 [sub_resource type="TileSet" id="TileSet_r34qa"]
 tile_shape = 1
-tile_size = Vector2i(112, 55)
+tile_size = Vector2i(128, 128)
 occlusion_layer_0/light_mask = 1
 physics_layer_0/collision_layer = 1
 physics_layer_0/physics_material = SubResource("PhysicsMaterial_exi0w")
 terrain_set_0/mode = 0
 sources/1 = SubResource("TileSetAtlasSource_quaqs")
+sources/2 = SubResource("TileSetAtlasSource_3p4uh")
+sources/4 = SubResource("TileSetAtlasSource_43tuo")
+sources/6 = SubResource("TileSetAtlasSource_mntdu")
+sources/7 = SubResource("TileSetAtlasSource_fxbjq")
 
 [node name="MapMakerIsometric" type="Node2D"]
 

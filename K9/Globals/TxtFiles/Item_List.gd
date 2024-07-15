@@ -1,4 +1,5 @@
 extends Node
+class_name K9_item_list
 
 var item_spawn_list = {
 	0:
@@ -6,6 +7,6 @@ var item_spawn_list = {
 	1:
 		load("res://K9/Modules/2D/SpotLightA.png"),
 	2:
-		load("res://K9/Modules/2D/WoodShedLogoB_4.png"),
+		load("res://K9/Modules/2D/EnviromentalModules/CarpetFloorA.png"),
 	}
 

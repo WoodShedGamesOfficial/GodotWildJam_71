@@ -1,7 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://c18w0dhft65lw"]
+[gd_scene load_steps=10 format=3 uid="uid://c18w0dhft65lw"]
 
 [ext_resource type="Script" path="res://K9/Lvls/MM/main_menu_Script.gd" id="1_kutuj"]
 [ext_resource type="Texture2D" uid="uid://b4r5s7knl3jjk" path="res://K9/Modules/2D/WsG_Qr_B.png" id="2_0ety0"]
+[ext_resource type="Texture2D" uid="uid://b221loo08ukxq" path="res://K9/Modules/2D/TitleCardB_2.png" id="2_iho81"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_u4iwr"]
+font_color = Color(1, 0, 0.0117647, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g1xxb"]
+bg_color = Color(0.886275, 0.756863, 0.631373, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_88254"]
 bg_color = Color(0, 0, 0, 1)
@@ -16,6 +23,42 @@ corner_radius_bottom_left = 2
 shadow_size = 4
 shadow_offset = Vector2(-3, 3)
 
+[sub_resource type="Animation" id="Animation_a4jil"]
+resource_name = "Fade"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasModulate:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_7b2dl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasModulate:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j2bmg"]
+_data = {
+"Fade": SubResource("Animation_a4jil"),
+"RESET": SubResource("Animation_7b2dl")
+}
+
 [node name="Main_menu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -25,6 +68,15 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_kutuj")
 
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.0588235, 0.109804, 0.129412, 1)
+polygon = PackedVector2Array(-78, -49, 1227, -44, 1215, 672, -45, 681)
+
+[node name="TitleCardB2" type="Sprite2D" parent="."]
+position = Vector2(584, 331)
+scale = Vector2(0.320024, 0.320024)
+texture = ExtResource("2_iho81")
+
 [node name="MMSelections" type="VBoxContainer" parent="."]
 layout_mode = 0
 offset_left = 41.0
@@ -32,7 +84,7 @@ offset_top = 482.0
 offset_right = 111.0
 offset_bottom = 618.0
 
-[node name="Button" type="Button" parent="MMSelections"]
+[node name="startgame" type="Button" parent="MMSelections"]
 layout_mode = 2
 text = "Start"
 
@@ -49,32 +101,44 @@ layout_mode = 2
 text = "Exit
 "
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 513.0
-offset_top = 28.0
-offset_right = 583.0
-offset_bottom = 51.0
-text = "TitleCard"
+[node name="TitleCard" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -65.5
+offset_right = 65.5
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "In the grip of the night"
+label_settings = SubResource("LabelSettings_u4iwr")
 
-[node name="Start_menu" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_left = 493.0
-offset_top = 221.0
-offset_right = 586.0
-offset_bottom = 322.0
+[node name="StartMenu" type="Panel" parent="."]
+layout_mode = 2
+offset_left = 474.0
+offset_top = 184.0
+offset_right = 627.0
+offset_bottom = 342.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_g1xxb")
 
-[node name="Button" type="Button" parent="Start_menu"]
+[node name="Start_menu" type="VBoxContainer" parent="StartMenu"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 29.0
+offset_right = 125.0
+offset_bottom = 130.0
+
+[node name="Button" type="Button" parent="StartMenu/Start_menu"]
 layout_mode = 2
 text = "New Game
 "
 
-[node name="Button2" type="Button" parent="Start_menu"]
+[node name="Button2" type="Button" parent="StartMenu/Start_menu"]
 layout_mode = 2
 disabled = true
 text = "Continue"
 
-[node name="Button3" type="Button" parent="Start_menu"]
+[node name="SBack" type="Button" parent="StartMenu/Start_menu"]
 layout_mode = 2
 text = "Back
 "
@@ -113,3 +177,37 @@ grow_vertical = 2
 text = "A WoodShed Games Production, with our 
 partners and friends!"
 horizontal_alignment = 1
+
+[node name="OptionsScreen" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 306.0
+offset_top = 178.0
+offset_right = 346.0
+offset_bottom = 218.0
+
+[node name="Panel" type="Panel" parent="OptionsScreen"]
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 200.0
+
+[node name="CheckButton" type="CheckButton" parent="OptionsScreen/Panel"]
+layout_mode = 0
+offset_left = 88.0
+offset_top = 86.0
+offset_right = 132.0
+offset_bottom = 110.0
+
+[node name="Label" type="Label" parent="OptionsScreen/Panel/CheckButton"]
+layout_mode = 0
+offset_left = -53.0
+offset_top = -1.0
+offset_right = -5.0
+offset_bottom = 22.0
+text = "toggle"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_j2bmg")
+}
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
