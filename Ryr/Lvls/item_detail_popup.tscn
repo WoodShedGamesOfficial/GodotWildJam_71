@@ -1,0 +1,79 @@
+[gd_scene load_steps=4 format=3 uid="uid://7ytrn8jf4nj4"]
+
+[ext_resource type="Texture2D" uid="uid://cobx6c77opf2j" path="res://icon.svg" id="1_sxopn"]
+
+[sub_resource type="Gradient" id="Gradient_q60qx"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 0.294118)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_kcnoc"]
+gradient = SubResource("Gradient_q60qx")
+
+[node name="ItemDetailPopup" type="CanvasLayer"]
+layer = 10
+
+[node name="Background" type="NinePatchRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_kcnoc")
+
+[node name="ItemDetailPanel" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ItemModel" type="TextureRect" parent="ItemDetailPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -249.0
+offset_right = 100.0
+offset_bottom = -49.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(100, 100)
+texture = ExtResource("1_sxopn")
+
+[node name="ItemName" type="RichTextLabel" parent="ItemDetailPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -91.0
+offset_top = -24.0
+offset_right = 84.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Ordinary Key"
+fit_content = true
+scroll_active = false
+
+[node name="ItemDescription" type="RichTextLabel" parent="ItemDetailPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -301.0
+offset_top = 44.0
+offset_right = 302.0
+offset_bottom = 194.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "This is just ordinary key"
+fit_content = true
+scroll_active = false
