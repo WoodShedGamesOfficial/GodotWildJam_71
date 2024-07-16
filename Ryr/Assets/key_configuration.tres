@@ -7,5 +7,6 @@
 script = ExtResource("1_ffpvx")
 item_id = 1
 item_name = "Ordinary Key"
+description = "It is just an ordinary key....."
 icon = ExtResource("1_hqoqn")
 sprite = ExtResource("1_hqoqn")

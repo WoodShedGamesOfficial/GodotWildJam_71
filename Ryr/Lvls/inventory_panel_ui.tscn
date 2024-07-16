@@ -27,32 +27,24 @@ alignment = 2
 
 [node name="ItemUI" parent="HBoxContainer" instance=ExtResource("2_86318")]
 layout_mode = 2
-texture = null
 
 [node name="ItemUI2" parent="HBoxContainer" instance=ExtResource("2_86318")]
 layout_mode = 2
-texture = null
 
 [node name="ItemUI3" parent="HBoxContainer" instance=ExtResource("2_86318")]
 layout_mode = 2
-texture = null
 
 [node name="ItemUI4" parent="HBoxContainer" instance=ExtResource("2_86318")]
 layout_mode = 2
-texture = null
 
 [node name="ItemUI5" parent="HBoxContainer" instance=ExtResource("2_86318")]
 layout_mode = 2
-texture = null
 
 [node name="ItemUI6" parent="HBoxContainer" instance=ExtResource("2_86318")]
 layout_mode = 2
-texture = null
 
 [node name="ItemUI7" parent="HBoxContainer" instance=ExtResource("2_86318")]
 layout_mode = 2
-texture = null
 
 [node name="ItemUI8" parent="HBoxContainer" instance=ExtResource("2_86318")]
 layout_mode = 2
-texture = null
