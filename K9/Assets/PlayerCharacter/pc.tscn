@@ -1,14 +1,81 @@
-[gd_scene load_steps=18 format=3 uid="uid://v5v3d7sdtm24"]
+[gd_scene load_steps=25 format=3 uid="uid://v5v3d7sdtm24"]
 
 [ext_resource type="Script" path="res://K9/Assets/PlayerCharacter/pc_Script.gd" id="1_hpfj1"]
 [ext_resource type="Texture2D" uid="uid://dkodph71yfleb" path="res://K9/Modules/2D/CapsuleGreybox.png" id="2_ammco"]
 [ext_resource type="Texture2D" uid="uid://dblsx7314c611" path="res://K9/Modules/2D/SpotLightA.png" id="3_3oq8h"]
 [ext_resource type="Texture2D" uid="uid://dtkq44gsafoya" path="res://K9/Modules/2D/ScreenRimA.png" id="4_31vav"]
+[ext_resource type="PackedScene" uid="uid://qlbo22iiyo34" path="res://K9/Assets/TextBox/text_box.tscn" id="5_1ijhs"]
 [ext_resource type="Texture2D" uid="uid://clj6xn8yf2cgh" path="res://K9/Modules/2D/PCSpriteSheetA.png" id="5_7nqvr"]
 [ext_resource type="Texture2D" uid="uid://d3tq3eh8p7yi6" path="res://K9/Modules/2D/PCSpriteSheet.png" id="5_g3jad"]
+[ext_resource type="Texture2D" uid="uid://cquspfw8xqr3h" path="res://K9/Modules/2D/Stat_Bar_circle_Merged.png" id="8_mr41q"]
+[ext_resource type="Texture2D" uid="uid://cbt8rp6sospw3" path="res://K9/Modules/2D/HeartFilling.png" id="9_eh3bg"]
+[ext_resource type="Texture2D" uid="uid://c2ohxhklt6p7b" path="res://K9/Modules/2D/HeartOutline.png" id="10_55mk0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ivhgk"]
 radius = 23.0217
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p1rnl"]
+atlas = ExtResource("5_g3jad")
+region = Rect2(64, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fc8so"]
+atlas = ExtResource("5_g3jad")
+region = Rect2(128, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1lq85"]
+atlas = ExtResource("5_g3jad")
+region = Rect2(192, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hfc1x"]
+atlas = ExtResource("5_7nqvr")
+region = Rect2(128, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ectqn"]
+atlas = ExtResource("5_7nqvr")
+region = Rect2(64, 64, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n8g06"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p1rnl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fc8so")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1lq85")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hfc1x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ectqn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hfc1x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ectqn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hfc1x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hfc1x")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_amq6d"]
+polygon = PackedVector2Array(-16, 46, -11, 38, -12, 27, -13, 16, -9, 7, -9, 1, 1, 0, 3, 6, 5, 14, 15, 22, 9, 30, 13, 47, 12, 50, 5, 50, 0, 34, -5, 35, -7, 45, -11, 52)
 
 [sub_resource type="Animation" id="Animation_rmpjw"]
 resource_name = "Pulse"
@@ -95,72 +162,50 @@ _data = {
 "RESET": SubResource("Animation_hppcy")
 }
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_p1rnl"]
-atlas = ExtResource("5_g3jad")
-region = Rect2(64, 128, 64, 64)
+[sub_resource type="Animation" id="Animation_smsdg"]
+resource_name = "Pulse"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureProgressBar:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.85, 0.95), Vector2(1, 1)]
+}
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fc8so"]
-atlas = ExtResource("5_g3jad")
-region = Rect2(128, 128, 64, 64)
+[sub_resource type="Animation" id="Animation_qphwe"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureProgressBar:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_1lq85"]
-atlas = ExtResource("5_g3jad")
-region = Rect2(192, 128, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hfc1x"]
-atlas = ExtResource("5_7nqvr")
-region = Rect2(128, 64, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ectqn"]
-atlas = ExtResource("5_7nqvr")
-region = Rect2(64, 64, 64, 64)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_n8g06"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_p1rnl")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fc8so")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_1lq85")
-}],
-"loop": true,
-"name": &"Walk",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hfc1x")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ectqn")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hfc1x")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ectqn")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hfc1x")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hfc1x")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
-
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_amq6d"]
-polygon = PackedVector2Array(-16, 46, -11, 38, -12, 27, -13, 16, -9, 7, -9, 1, 1, 0, 3, 6, 5, 14, 15, 22, 9, 30, 13, 47, 12, 50, 5, 50, 0, 34, -5, 35, -7, 45, -11, 52)
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tvdvg"]
+_data = {
+"Pulse": SubResource("Animation_smsdg"),
+"RESET": SubResource("Animation_qphwe")
+}
 
 [node name="PC" type="CharacterBody2D"]
 collision_mask = 14
 script = ExtResource("1_hpfj1")
+PC_Stats = {
+"sleep_decay_rate": 1.25,
+"sleep_max": 100.0
+}
 
 [node name="CapsuleGreybox" type="Sprite2D" parent="."]
 visible = false
@@ -179,6 +224,7 @@ drag_right_margin = 0.05
 [node name="PCHand" type="Node2D" parent="."]
 
 [node name="PCFlashlight" type="PointLight2D" parent="PCHand"]
+visible = false
 position = Vector2(7.99997, 4)
 rotation = 1.57666
 color = Color(0.764706, 0.643137, 0, 1)
@@ -186,32 +232,6 @@ shadow_enabled = true
 shadow_filter = 2
 texture = ExtResource("3_3oq8h")
 offset = Vector2(-0.75, -261.725)
-
-[node name="PC_UI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="PC_StatusVFX" type="Control" parent="PC_UI"]
-visible = false
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="ScreenRimA" type="Sprite2D" parent="PC_UI/PC_StatusVFX"]
-position = Vector2(1, 3)
-scale = Vector2(0.676924, 0.476924)
-texture = ExtResource("4_31vav")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="PC_UI/PC_StatusVFX/ScreenRimA"]
-libraries = {
-"": SubResource("AnimationLibrary_ggssi")
-}
-autoplay = "Pulse"
-speed_scale = 1.5
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(-49, -31)
@@ -226,3 +246,103 @@ position = Vector2(32.826, 20.0159)
 scale = Vector2(0.800634, 0.800634)
 occluder = SubResource("OccluderPolygon2D_amq6d")
 occluder_light_mask = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PC_UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PC_StatusVFX" type="Control" parent="CanvasLayer/PC_UI"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ScreenRimA" type="Sprite2D" parent="CanvasLayer/PC_UI/PC_StatusVFX"]
+position = Vector2(1, 3)
+scale = Vector2(0.676924, 0.476924)
+texture = ExtResource("4_31vav")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/PC_UI/PC_StatusVFX/ScreenRimA"]
+libraries = {
+"": SubResource("AnimationLibrary_ggssi")
+}
+autoplay = "Pulse"
+speed_scale = 1.5
+
+[node name="Text_Box" parent="CanvasLayer/PC_UI" instance=ExtResource("5_1ijhs")]
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 267.0
+offset_top = 426.0
+offset_right = 967.0
+offset_bottom = 626.0
+grow_horizontal = 1
+
+[node name="SleepBar" type="TextureProgressBar" parent="CanvasLayer/PC_UI"]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 505.0
+offset_right = 263.0
+offset_bottom = 745.0
+scale = Vector2(0.533329, 0.533329)
+value = 15.0
+fill_mode = 5
+texture_under = ExtResource("8_mr41q")
+texture_progress = ExtResource("8_mr41q")
+tint_under = Color(0.654902, 0.243137, 0, 1)
+tint_progress = Color(0.254902, 0.415686, 1, 1)
+
+[node name="Label" type="Label" parent="CanvasLayer/PC_UI/SleepBar"]
+layout_mode = 0
+offset_left = 86.2507
+offset_top = 116.251
+offset_right = 126.251
+offset_bottom = 139.251
+scale = Vector2(1.48675, 1.59478)
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+text = "ZZzz"
+
+[node name="DeathIsntEndScreen" type="Control" parent="CanvasLayer/PC_UI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -41.0
+offset_top = -67.0
+offset_right = -1.0
+offset_bottom = -27.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/PC_UI/DeathIsntEndScreen"]
+layout_mode = 0
+offset_left = -2.0
+offset_top = -13.0
+offset_right = 126.0
+offset_bottom = 115.0
+value = 35.0
+fill_mode = 3
+texture_under = ExtResource("9_eh3bg")
+texture_over = ExtResource("10_55mk0")
+texture_progress = ExtResource("9_eh3bg")
+tint_under = Color(0.301961, 0, 0, 1)
+tint_progress = Color(1, 0, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/PC_UI/DeathIsntEndScreen"]
+libraries = {
+"": SubResource("AnimationLibrary_tvdvg")
+}
+
+[node name="Second_wind_timer" type="Timer" parent="CanvasLayer/PC_UI/DeathIsntEndScreen"]
+
+[node name="SleepTimer" type="Timer" parent="."]

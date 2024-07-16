@@ -17,7 +17,7 @@ func _ready():
 	pass # Replace with function body.
 
 func start_the_game():
-	K9Globals.level_path_to_load = load("res://K9/Lvls/Dev_Room/k_9_dev_room.tscn")
+	K9Globals.level_path_to_load = load("res://K9/Lvls/Lvl_0/K9_lvl_0.tscn")
 	var loading_screen_p = load("res://K9/Lvls/LoadingScreen/loading_screen.tscn")
 	
 	get_tree().change_scene_to_packed(loading_screen_p)

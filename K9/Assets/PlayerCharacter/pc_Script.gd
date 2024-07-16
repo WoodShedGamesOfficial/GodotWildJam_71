@@ -1,9 +1,23 @@
 extends CharacterBody2D
 
+@export var Player_Name: String 
 
 @export var SPEED : float = 150.0
+
+@export var PC_Stats = {
+	"sleep_max" :
+		100.0,
+	'sleep_decay_rate' :
+		0.05,
+	'bleed_rate' :
+		1.0,
+}
 #const JUMP_VELOCITY = -400.0
 
+var sleep : float 
+
+var player_state = ['alive', 'dying', 'dead']
+var current_player_state
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 #var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -11,6 +25,12 @@ func _ready():
 	add_to_group("player")
 	
 	$AnimatedSprite2D.play('default')
+	
+	sleep = PC_Stats['sleep_max']
+	$SleepTimer.connect('timeout', sleep_tick)
+	$SleepTimer.start()
+	
+	$CanvasLayer/PC_UI/DeathIsntEndScreen.visible = false
 	pass
 	
 
@@ -44,6 +64,9 @@ func _process(delta):
 	monitor_mouse_position()
 	#-------
 	
+	$CanvasLayer/PC_UI/SleepBar.value = sleep
+	
+	#---------
 	if velocity.x or velocity.y != 0:
 		$AnimatedSprite2D.play("Walk")
 	else:
@@ -51,6 +74,8 @@ func _process(delta):
 	 
 	#light follows mouse_pos
 	$PCHand.look_at(get_global_mouse_position())
+	
+	
 	pass
 	
 
@@ -67,3 +92,59 @@ func monitor_mouse_position(): #"rotate" player sprite
 	pass
 	
 
+var is_dying : bool
+
+func sleep_tick():
+	
+	if sleep > 1 and is_dying != true:
+		current_player_state = player_state[0]
+		sleep -= PC_Stats['sleep_decay_rate']
+		
+	elif sleep < 0 and is_dying != true:
+		current_player_state = player_state[1]
+		$CanvasLayer/PC_UI/DeathIsntEndScreen/TextureProgressBar.value = 50
+		second_wind()
+		is_dying = true
+	
+	#await get_tree().create_timer(.5).timeout
+	$CanvasLayer/PC_UI/DeathIsntEndScreen/TextureProgressBar.value -= 0.01
+	
+	print(str(sleep))
+	pass
+	
+
+func second_wind():
+	var second_timer = $CanvasLayer/PC_UI/DeathIsntEndScreen/Second_wind_timer
+	var second_wind_time : float = 15.0
+	
+	
+	var second_wind_screen = $CanvasLayer/PC_UI/DeathIsntEndScreen
+	var second_wind_vfx = $CanvasLayer/PC_UI/PC_StatusVFX
+	
+	second_timer.wait_time = second_wind_time
+	second_timer.connect('timeout', death)
+	second_timer.start()
+	
+	second_wind_screen.visible = true
+	second_wind_vfx.visible = true
+	
+	$CanvasLayer/PC_UI/PC_StatusVFX/ScreenRimA/AnimationPlayer.play('fade')
+	$CanvasLayer/PC_UI/DeathIsntEndScreen/AnimationPlayer.play('Pulse')
+	
+	if Input.is_action_just_pressed("ui_accept"):
+		$CanvasLayer/PC_UI/DeathIsntEndScreen/TextureProgressBar.value += 10.0
+	
+	
+	#is_dying = false
+	#sleep_tick()
+	print('dying mini game')
+	pass
+	
+
+func death():
+	var MM_P : PackedScene = load("res://K9/Lvls/MM/main_menu.tscn")
+	
+	get_tree().change_scene_to_packed(MM_P)
+	print('death')
+	pass
+	
