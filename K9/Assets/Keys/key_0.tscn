@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://b77okb2oj6bl7"]
+
+[ext_resource type="Texture2D" uid="uid://dr31qde8hjlhg" path="res://K9/Modules/2D/Keys.png" id="1_c35ga"]
+[ext_resource type="Script" path="res://K9/Assets/Keys/key_Script.gd" id="1_se0na"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_olwr3"]
+
+[node name="Key0" type="Node2D"]
+script = ExtResource("1_se0na")
+text_to_read = "Theres my phone, must have slipped out of my pocket"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.144047, 0.144047)
+texture = ExtResource("1_c35ga")
+
+[node name="PickupArea" type="Area2D" parent="Sprite2D"]
+scale = Vector2(6.94218, 6.94218)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/PickupArea"]
+shape = SubResource("RectangleShape2D_olwr3")

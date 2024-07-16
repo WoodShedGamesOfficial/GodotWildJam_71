@@ -1,5 +1,5 @@
 extends Node
-class_name K9_item_list
+
 
 var item_spawn_list = {
 	0:
@@ -10,3 +10,6 @@ var item_spawn_list = {
 		load("res://K9/Modules/2D/EnviromentalModules/CarpetFloorA.png"),
 	}
 
+var key_list = {
+	#append keys
+}

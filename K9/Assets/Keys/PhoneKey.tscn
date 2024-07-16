@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://n1hrkryowlyt"]
+
+[ext_resource type="Script" path="res://K9/Assets/Keys/key_Script.gd" id="1_su0kb"]
+[ext_resource type="Texture2D" uid="uid://cauf8w8eny8uk" path="res://K9/Modules/2D/EnviromentalModules/CellPhoneKey.png" id="2_ls7ga"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_olwr3"]
+
+[node name="Key0" type="Node2D"]
+z_index = 1
+script = ExtResource("1_su0kb")
+key_name = "CellPhone"
+key_description = "Howd that get here?"
+text_to_read = "My Cell Phone... it's got 32 missed messages?"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.144047, 0.144047)
+texture = ExtResource("2_ls7ga")
+
+[node name="PickupArea" type="Area2D" parent="Sprite2D"]
+scale = Vector2(6.94218, 6.94218)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/PickupArea"]
+shape = SubResource("RectangleShape2D_olwr3")

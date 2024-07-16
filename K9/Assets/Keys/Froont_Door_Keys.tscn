@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://cxnrfqvc38c6t"]
+
+[ext_resource type="Script" path="res://K9/Assets/Keys/key_Script.gd" id="1_8wrac"]
+[ext_resource type="Texture2D" uid="uid://dr31qde8hjlhg" path="res://K9/Modules/2D/Keys.png" id="2_fd3uu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_olwr3"]
+
+[node name="Key0" type="Node2D"]
+script = ExtResource("1_8wrac")
+key_name = "Front_Door_Keys"
+key_description = "keys to the front door"
+text_to_read = "My keys to the front door, what the hell"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.144047, 0.144047)
+texture = ExtResource("2_fd3uu")
+
+[node name="PickupArea" type="Area2D" parent="Sprite2D"]
+scale = Vector2(6.94218, 6.94218)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/PickupArea"]
+shape = SubResource("RectangleShape2D_olwr3")

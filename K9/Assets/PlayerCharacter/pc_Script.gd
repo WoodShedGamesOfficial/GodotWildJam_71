@@ -61,21 +61,54 @@ func _physics_process(delta):
 	
 
 func _process(delta):
-	monitor_mouse_position()
+	#monitor_mouse_position()
 	#-------
 	
 	$CanvasLayer/PC_UI/SleepBar.value = sleep
 	
-	#---------
-	if velocity.x or velocity.y != 0:
-		$AnimatedSprite2D.play("Walk")
-	else:
-		$AnimatedSprite2D.play("default")
+	#--------- Animations
+	
+	
+	#if velocity.x or velocity.y != 0:
+		#$AnimatedSprite2D.play("Walk")
+	#else:
+		#$AnimatedSprite2D.play("default")
 	 
+	
+	#---
 	#light follows mouse_pos
 	$PCHand.look_at(get_global_mouse_position())
 	
 	
+	pass
+	
+
+func _input(event):
+	if Input.is_action_just_pressed("Task_button"):
+		var text_to_display = K9Globals.current_task
+		show_current_task_hint(text_to_display)
+	
+	if Input.is_action_pressed('ui_right'):
+		$AnimatedSprite2D.play('right')
+	elif Input.is_action_pressed('ui_left'):
+		$AnimatedSprite2D.play('left')
+	elif Input.is_action_pressed('ui_up'):
+		$AnimatedSprite2D.play('back')
+	elif Input.is_action_pressed('ui_down'):
+		$AnimatedSprite2D.play('front')
+	else:
+		$AnimatedSprite2D.play("Idle")
+	pass
+	
+
+func show_dialogue_box(text_to_read):
+	var D_Box = $MarginContainer
+	var D_Box_Label = $MarginContainer/Label
+	
+	D_Box.visible = true
+	D_Box_Label.text = str(text_to_read)
+	await get_tree().create_timer(5.0).timeout
+	D_Box.visible = false
 	pass
 	
 
@@ -102,14 +135,14 @@ func sleep_tick():
 		
 	elif sleep < 0 and is_dying != true:
 		current_player_state = player_state[1]
-		$CanvasLayer/PC_UI/DeathIsntEndScreen/TextureProgressBar.value = 50
+		#$CanvasLayer/PC_UI/DeathIsntEndScreen/TextureProgressBar.value = 50
 		second_wind()
 		is_dying = true
 	
 	#await get_tree().create_timer(.5).timeout
-	$CanvasLayer/PC_UI/DeathIsntEndScreen/TextureProgressBar.value -= 0.01
+	#$CanvasLayer/PC_UI/DeathIsntEndScreen/TextureProgressBar.value -= 0.01
 	
-	print(str(sleep))
+	#print(str(sleep))
 	pass
 	
 
@@ -120,20 +153,21 @@ func second_wind():
 	
 	var second_wind_screen = $CanvasLayer/PC_UI/DeathIsntEndScreen
 	var second_wind_vfx = $CanvasLayer/PC_UI/PC_StatusVFX
-	
-	second_timer.wait_time = second_wind_time
-	second_timer.connect('timeout', death)
-	second_timer.start()
-	
+	#
+	#second_timer.wait_time = second_wind_time
+	#second_timer.connect('timeout', death)
+	#second_timer.start()
+	#
 	second_wind_screen.visible = true
 	second_wind_vfx.visible = true
 	
 	$CanvasLayer/PC_UI/PC_StatusVFX/ScreenRimA/AnimationPlayer.play('fade')
 	$CanvasLayer/PC_UI/DeathIsntEndScreen/AnimationPlayer.play('Pulse')
 	
-	if Input.is_action_just_pressed("ui_accept"):
-		$CanvasLayer/PC_UI/DeathIsntEndScreen/TextureProgressBar.value += 10.0
+	#if Input.is_action_just_pressed("ui_accept"):
+		#$CanvasLayer/PC_UI/DeathIsntEndScreen/TextureProgressBar.value += 10.0
 	
+	get_tree().paused = true
 	
 	#is_dying = false
 	#sleep_tick()
@@ -145,6 +179,15 @@ func death():
 	var MM_P : PackedScene = load("res://K9/Lvls/MM/main_menu.tscn")
 	
 	get_tree().change_scene_to_packed(MM_P)
+	
 	print('death')
+	
 	pass
 	
+
+func show_current_task_hint(text_to_display):
+	$MarginContainer.visible = true
+	$MarginContainer/Label.text = str(text_to_display)
+	await get_tree().create_timer(5.0).timeout
+	$MarginContainer.visible = false
+	pass

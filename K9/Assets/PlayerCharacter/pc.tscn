@@ -1,76 +1,86 @@
-[gd_scene load_steps=25 format=3 uid="uid://v5v3d7sdtm24"]
+[gd_scene load_steps=29 format=3 uid="uid://v5v3d7sdtm24"]
 
 [ext_resource type="Script" path="res://K9/Assets/PlayerCharacter/pc_Script.gd" id="1_hpfj1"]
 [ext_resource type="Texture2D" uid="uid://dkodph71yfleb" path="res://K9/Modules/2D/CapsuleGreybox.png" id="2_ammco"]
 [ext_resource type="Texture2D" uid="uid://dblsx7314c611" path="res://K9/Modules/2D/SpotLightA.png" id="3_3oq8h"]
 [ext_resource type="Texture2D" uid="uid://dtkq44gsafoya" path="res://K9/Modules/2D/ScreenRimA.png" id="4_31vav"]
 [ext_resource type="PackedScene" uid="uid://qlbo22iiyo34" path="res://K9/Assets/TextBox/text_box.tscn" id="5_1ijhs"]
-[ext_resource type="Texture2D" uid="uid://clj6xn8yf2cgh" path="res://K9/Modules/2D/PCSpriteSheetA.png" id="5_7nqvr"]
-[ext_resource type="Texture2D" uid="uid://d3tq3eh8p7yi6" path="res://K9/Modules/2D/PCSpriteSheet.png" id="5_g3jad"]
+[ext_resource type="Texture2D" uid="uid://dwpgtjfir5may" path="res://KHZ/Modules/2D/Back 1@3x.png" id="5_hwk7x"]
+[ext_resource type="Texture2D" uid="uid://dkd38m56xbk1n" path="res://KHZ/Modules/2D/Back 2@3x.png" id="6_swhlk"]
+[ext_resource type="Texture2D" uid="uid://dcto18xt7xbor" path="res://KHZ/Modules/2D/GameOver@3x.png" id="7_1e2xy"]
 [ext_resource type="Texture2D" uid="uid://cquspfw8xqr3h" path="res://K9/Modules/2D/Stat_Bar_circle_Merged.png" id="8_mr41q"]
+[ext_resource type="Texture2D" uid="uid://cnwfjchkawl5v" path="res://KHZ/Modules/2D/Front 1@3x.png" id="9_2kkhs"]
 [ext_resource type="Texture2D" uid="uid://cbt8rp6sospw3" path="res://K9/Modules/2D/HeartFilling.png" id="9_eh3bg"]
+[ext_resource type="Texture2D" uid="uid://b33v3yojboxi6" path="res://KHZ/Modules/2D/Front 2@3x.png" id="10_4slii"]
 [ext_resource type="Texture2D" uid="uid://c2ohxhklt6p7b" path="res://K9/Modules/2D/HeartOutline.png" id="10_55mk0"]
+[ext_resource type="Texture2D" uid="uid://bebtvdlvma2w6" path="res://KHZ/Modules/2D/Left 1@3x.png" id="11_i5v0p"]
+[ext_resource type="Texture2D" uid="uid://cuw515eqsysd" path="res://KHZ/Modules/2D/Left 2@3x.png" id="12_kwkun"]
+[ext_resource type="Texture2D" uid="uid://l3xyt6fhiipi" path="res://KHZ/Modules/2D/Right 1@3x.png" id="13_yoo1x"]
+[ext_resource type="Texture2D" uid="uid://doiddspeobbih" path="res://KHZ/Modules/2D/Right 2@3x.png" id="14_ap8qb"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ivhgk"]
 radius = 23.0217
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_p1rnl"]
-atlas = ExtResource("5_g3jad")
-region = Rect2(64, 128, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fc8so"]
-atlas = ExtResource("5_g3jad")
-region = Rect2(128, 128, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1lq85"]
-atlas = ExtResource("5_g3jad")
-region = Rect2(192, 128, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hfc1x"]
-atlas = ExtResource("5_7nqvr")
-region = Rect2(128, 64, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ectqn"]
-atlas = ExtResource("5_7nqvr")
-region = Rect2(64, 64, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_n8g06"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_p1rnl")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fc8so")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_1lq85")
+"texture": ExtResource("9_2kkhs")
 }],
 "loop": true,
-"name": &"Walk",
+"name": &"Idle",
 "speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_hfc1x")
+"texture": ExtResource("5_hwk7x")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ectqn")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hfc1x")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ectqn")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hfc1x")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hfc1x")
+"texture": ExtResource("6_swhlk")
 }],
 "loop": true,
-"name": &"default",
+"name": &"back",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_1e2xy")
+}],
+"loop": true,
+"name": &"cry",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_2kkhs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_4slii")
+}],
+"loop": true,
+"name": &"front",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_i5v0p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_kwkun")
+}],
+"loop": true,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_yoo1x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_ap8qb")
+}],
+"loop": true,
+"name": &"right",
 "speed": 5.0
 }]
 
@@ -162,6 +172,30 @@ _data = {
 "RESET": SubResource("Animation_hppcy")
 }
 
+[sub_resource type="GDScript" id="GDScript_qiplc"]
+resource_name = "SeconfdWindScript"
+script/source = "extends Control
+
+signal player_failed
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	$Second_wind_timer.connect('timeout', death)
+	
+	pass # Replace with function body.
+	
+
+func start_second_wind():
+	$Second_wind_timer.start()
+	pass
+	
+
+func death():
+	emit_signal('player_failed')
+	pass
+	
+"
+
 [sub_resource type="Animation" id="Animation_smsdg"]
 resource_name = "Pulse"
 loop_mode = 1
@@ -199,13 +233,18 @@ _data = {
 "RESET": SubResource("Animation_qphwe")
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ban18"]
+bg_color = Color(0.447059, 0.298039, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.00392157, 0, 1)
+border_blend = true
+
 [node name="PC" type="CharacterBody2D"]
 collision_mask = 14
 script = ExtResource("1_hpfj1")
-PC_Stats = {
-"sleep_decay_rate": 1.25,
-"sleep_max": 100.0
-}
 
 [node name="CapsuleGreybox" type="Sprite2D" parent="."]
 visible = false
@@ -216,6 +255,7 @@ position = Vector2(-1, 40)
 shape = SubResource("CircleShape2D_ivhgk")
 
 [node name="PCcam" type="Camera2D" parent="."]
+zoom = Vector2(1.75, 1.75)
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
 drag_left_margin = 0.05
@@ -234,16 +274,15 @@ texture = ExtResource("3_3oq8h")
 offset = Vector2(-0.75, -261.725)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(-49, -31)
-scale = Vector2(1.47295, 1.47295)
+position = Vector2(-22, -24)
+scale = Vector2(0.144516, 0.144516)
 sprite_frames = SubResource("SpriteFrames_n8g06")
-animation = &"Walk"
-frame_progress = 0.0345097
+animation = &"Idle"
 centered = false
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="AnimatedSprite2D"]
-position = Vector2(32.826, 20.0159)
-scale = Vector2(0.800634, 0.800634)
+position = Vector2(159.152, 179.911)
+scale = Vector2(8.52178, 8.52178)
 occluder = SubResource("OccluderPolygon2D_amq6d")
 occluder_light_mask = 2
 
@@ -276,6 +315,7 @@ autoplay = "Pulse"
 speed_scale = 1.5
 
 [node name="Text_Box" parent="CanvasLayer/PC_UI" instance=ExtResource("5_1ijhs")]
+visible = false
 layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.0
@@ -311,6 +351,7 @@ theme_override_colors/font_color = Color(0, 1, 1, 1)
 text = "ZZzz"
 
 [node name="DeathIsntEndScreen" type="Control" parent="CanvasLayer/PC_UI"]
+process_mode = 2
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -323,6 +364,7 @@ offset_right = -1.0
 offset_bottom = -27.0
 grow_horizontal = 2
 grow_vertical = 2
+script = SubResource("GDScript_qiplc")
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/PC_UI/DeathIsntEndScreen"]
 layout_mode = 0
@@ -344,5 +386,36 @@ libraries = {
 }
 
 [node name="Second_wind_timer" type="Timer" parent="CanvasLayer/PC_UI/DeathIsntEndScreen"]
+wait_time = 15.0
+one_shot = true
+
+[node name="Controlls" type="Label" parent="CanvasLayer/PC_UI"]
+layout_mode = 0
+offset_left = 164.0
+offset_top = 566.0
+offset_right = 265.0
+offset_bottom = 641.0
+text = "X = task
+F = Flashlight
+E = Interact"
 
 [node name="SleepTimer" type="Timer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+visible = false
+offset_left = -155.0
+offset_top = -82.0
+offset_right = 42.0
+offset_bottom = -12.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Label" type="Label" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_ban18")
+vertical_alignment = 1

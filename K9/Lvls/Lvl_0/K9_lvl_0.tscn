@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bugox0lyivs3k"]
+[gd_scene load_steps=28 format=3 uid="uid://bugox0lyivs3k"]
 
 [ext_resource type="Script" path="res://K9/Lvls/Lvl_0/K9_lvl_0_Script.gd" id="1_k7c7e"]
 [ext_resource type="TileSet" uid="uid://boecf3yycdujl" path="res://WsG_ToolBox/TheMapMaker/TileSet_A.tres" id="2_sxcnt"]
@@ -11,8 +11,134 @@
 [ext_resource type="Texture2D" uid="uid://n4phq4c76wa5" path="res://K9/Modules/2D/EnviromentalModules/export/Decor/KeyRing.png" id="10_7bbb5"]
 [ext_resource type="Texture2D" uid="uid://b1sd1mygmlyqk" path="res://K9/Modules/2D/EnviromentalModules/export/Decor/couch.png" id="11_cj5ip"]
 [ext_resource type="Texture2D" uid="uid://07e0u0jhdbc0" path="res://K9/Modules/2D/EnviromentalModules/export/Decor/PhotosA.png" id="12_x1m8q"]
+[ext_resource type="PackedScene" uid="uid://dei0okrdcuiu8" path="res://K9/Assets/Locks/locked_door.tscn" id="13_1kf08"]
+[ext_resource type="Texture2D" uid="uid://cqtant6ju4vgx" path="res://K9/Modules/2D/Counter.png" id="13_n5phb"]
 [ext_resource type="PackedScene" uid="uid://v5v3d7sdtm24" path="res://K9/Assets/PlayerCharacter/pc.tscn" id="13_rxofp"]
 [ext_resource type="Texture2D" uid="uid://l5mos7ii2e1c" path="res://K9/Modules/2D/EnviromentalModules/export/Decor/TV.png" id="14_3sqil"]
+[ext_resource type="Texture2D" uid="uid://4eifyncv4yei" path="res://K9/Modules/2D/Fridge.png" id="14_qhd8y"]
+[ext_resource type="Texture2D" uid="uid://c4pk6tbcitdjr" path="res://K9/Modules/2D/EnviromentalModules/ovalOffice.png" id="15_0gs2u"]
+[ext_resource type="AudioStream" uid="uid://b7qy6nyvjqmx6" path="res://K9/Modules/Audio/Crows Group_01_DW_SFX.wav" id="17_iw6oi"]
+[ext_resource type="Texture2D" uid="uid://dest1ox4ni26s" path="res://K9/Modules/2D/EnviromentalModules/export/Decor/Calendar.png" id="18_cn2s1"]
+[ext_resource type="AudioStream" uid="uid://db7qgybt42se7" path="res://K9/Modules/Audio/SIIIICK.ogg" id="18_d2kyc"]
+
+[sub_resource type="GDScript" id="GDScript_s88ni"]
+resource_name = "Front Door"
+script/source = "extends Sprite2D
+
+@export var required_key : String = 'Key_0'
+@onready var interactable_area = $Area2D
+
+var is_interactable : bool 
+
+signal front_door_attempted
+signal missing_key
+
+func _ready():
+	interactable_area.connect(\"body_entered\", attempt_to_open_door)
+	interactable_area.connect(\"body_exited\", step_away_from_the_Door)
+	pass # Replace with function body.
+
+func step_away_from_the_Door(body):
+	if body.is_in_group('player'):
+		is_interactable = false
+	pass
+	
+
+func attempt_to_open_door(body):
+	if body.is_in_group('player'):
+		if body.has_method('show_dialogue_box'):
+			var text_to_read : String
+			
+			body.show_dialogue_box(text_to_read)
+		is_interactable = true
+		print('close  ' + str(is_interactable))
+	
+	pass
+	
+
+func _input(event):
+	
+	if Input.is_action_just_pressed(\"Player_interact\") and is_interactable == true:
+		for key in K9GlobalItemList.key_list:
+			if key == required_key:
+				open_door()
+		
+	pass
+	
+
+func open_door():
+	print('tried to open the front door')
+	emit_signal(\"front_door_attempted\")
+	pass
+	
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wdt7s"]
+radius = 42.8367
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kc2t8"]
+size = Vector2(51.9001, 20)
+
+[sub_resource type="Animation" id="Animation_kcn4p"]
+resource_name = "Fade_In"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AbientLight:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0.545098, 0.392157, 0.321569, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ditjn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AbientLight:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.729412, 0.521569, 0.360784, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_txt7s"]
+_data = {
+"Fade_In": SubResource("Animation_kcn4p"),
+"RESET": SubResource("Animation_ditjn")
+}
+
+[sub_resource type="GDScript" id="GDScript_pjd2y"]
+resource_name = "Calendar"
+script/source = "extends Sprite2D
+
+var is_interactable : bool 
+
+func _ready():
+	$Area2D.connect('body_entered', body_enter)
+	$Area2D.connect('body_exited', body_exit)
+	pass
+	
+
+func body_enter(body):
+	if body.is_in_group('player'):
+		is_interactable = true
+	pass
+	
+
+func body_exit(body):
+	if body.is_in_group('player'):
+		is_interactable = false
+	pass
+"
 
 [node name="Lvl_0" type="Node2D"]
 script = ExtResource("1_k7c7e")
@@ -27,7 +153,7 @@ polygon = PackedVector2Array(-536, -895, 3033, -898, 3003, 1127, -664, 1150)
 [node name="1stPhase" type="TileMap" parent="TheHouse"]
 tile_set = ExtResource("2_sxcnt")
 format = 2
-layer_0/tile_data = PackedInt32Array(262143, 0, 131072, 196607, 0, 131072, 131072, 0, 131072, 65536, 0, 131072, 0, 0, 131072, -1, 0, 131072, 65535, 0, 131072, 131071, 0, 131072, -65536, 0, 131072, 196608, 0, 131072, -65535, 0, 131072, 1, 0, 131072, 65537, 0, 131072, 131073, 0, 131072, 196609, 0, 131072, -65534, 0, 131072, 2, 0, 131072, 65538, 0, 131072, 131074, 0, 131072, 196610, 0, 131072, -65533, 0, 131072, 3, 0, 131072, 65539, 0, 131072, 131075, 0, 131072, 196611, 0, 131072, -65537, 3, 262144, -131072, 3, 262144, -131071, 3, 262144, -131070, 3, 262144, -131069, 3, 262144, -65532, 3, 131072, 65540, 0, 196608, 131076, 3, 65536, 196612, 3, 65536, 262147, 3, 262144, 262146, 3, 262144, 262145, 3, 262144, 262144, 3, 262144, 327679, 3, 262144, 262142, 3, 262144, 196606, 3, 262144, 131070, 3, 262144, 65534, 3, 262144, -2, 3, 262144, 262148, 3, 262144, 327678, 3, 262144, -131068, 3, 0, -65538, 3, 262144, 4, 0, 131072, 5, 0, 196608, 6, 0, 196608, 7, 0, 196608, 8, 0, 196608, 9, 0, 196608, 10, 0, 196608, -65531, 3, 131072, -65530, 3, 131072, -65528, 3, 262144, -65527, 3, 262144, -65526, 3, 0, -131062, 3, 262144, -196598, 3, 262144, -262134, 3, 262144, -327670, 3, 262144, -393206, 3, 262144, -393207, 3, 262144, -393208, 3, 262144, -393209, 3, 262144, -393210, 3, 262144, -393211, 3, 262144, -393212, 3, 0, -327676, 3, 0, -262140, 3, 0, -196604, 3, 0, 65541, 0, 196608, 65542, 0, 196608, 65543, 0, 196608, 65544, 0, 196608, 65545, 0, 196608, 65546, 0, 196608, -65529, 0, 131072, -131063, 0, 131072, -327675, 0, 131072, -262139, 0, 131072, -196603, 0, 131072, -131067, 0, 131072, -327674, 0, 131072, -262138, 0, 131072, -196602, 0, 131072, -131066, 0, 131072, -327673, 0, 131072, -262137, 0, 131072, -196601, 0, 131072, -131065, 0, 131072, -327672, 0, 131072, -262136, 0, 131072, -196600, 0, 131072, -131064, 0, 131072, -327671, 0, 131072, -262135, 0, 131072, -196599, 0, 131072, -393205, 0, 131072, -327669, 0, 131072, -262133, 0, 131072, -196597, 0, 131072, -131061, 0, 131072, -65525, 0, 131072, 11, 0, 131072, 65547, 0, 131072, -393204, 0, 131072, -327668, 0, 131072, -262132, 0, 131072, -196596, 0, 131072, -131060, 0, 131072, -65524, 0, 131072, 12, 0, 131072, 65548, 0, 131072, -393203, 0, 131072, -327667, 0, 131072, -262131, 0, 131072, -196595, 0, 131072, -131059, 0, 131072, -65523, 0, 131072, 13, 0, 131072, 65549, 0, 131072, -393202, 0, 131072, -327666, 0, 131072, -262130, 0, 131072, -196594, 0, 131072, -131058, 0, 131072, -65522, 0, 131072, 14, 0, 131072, 65550, 0, 131072, -393201, 0, 131072, -327665, 0, 131072, -262129, 0, 131072, -196593, 0, 131072, -131057, 0, 131072, -65521, 0, 131072, 15, 0, 131072, 65551, 0, 131072, -458739, 3, 262144, -458737, 0, 65536, -458736, 3, 262144, -393200, 3, 262144, -196592, 3, 262144, -131056, 3, 262144, -65520, 3, 262144, 16, 3, 262144, 65552, 3, 262144, 131088, 3, 262144, 131087, 3, 262144, 131084, 3, 262144, 131083, 3, 262144, 131082, 3, 131072, 131081, 3, 131072, 131080, 3, 131072, 131077, 3, 65536, 327684, 3, 262144, 393220, 3, 262144, 458756, 3, 0, 458757, 3, 0, 458758, 3, 0, 458759, 3, 0, 458760, 3, 0, 458761, 3, 0, 393225, 3, 196608, 327689, 3, 196608, 262153, 3, 196608, 196617, 3, 196608, 458762, 3, 0, 458763, 3, 0, 458764, 3, 0, 458765, 3, 0, 458766, 3, 0, 458767, 3, 0, 458768, 3, 0, 196624, 3, 0, 262160, 3, 0, 327696, 3, 0, 393232, 3, 0, -589817, 3, 65536, -589818, 3, 65536, -589819, 3, 65536, -589820, 3, 65536, -589821, 3, 65536, -589822, 3, 65536, -589823, 3, 65536, -589824, 3, 65536, -524289, 3, 65536, -524290, 3, 65536, -458754, 3, 262144, -393218, 3, 262144, -327682, 3, 262144, -262146, 3, 262144, -196610, 3, 262144, -131074, 3, 262144, -524275, 3, 262144, -589811, 3, 262144, -655347, 3, 262144, -655348, 3, 262144, -655349, 3, 262144, -655350, 3, 262144, -655351, 3, 65536, -655352, 3, 65536, -655353, 3, 65536, -327664, 3, 262144, -262128, 3, 262144, -524272, 3, 0, -589808, 3, 0, -655344, 3, 0, -720880, 3, 0, -786416, 3, 0, -720883, 3, 0, -786419, 3, 196608, -851955, 3, 196608, -851952, 3, 0, -917488, 3, 0, -917491, 3, 196608, -983027, 3, 196608, -983024, 3, 0, -851954, 0, 65536, -851953, 0, 65536, -786418, 0, 65536, -720882, 0, 65536, -655346, 0, 65536, -589810, 0, 65536, -524274, 0, 65536, -786417, 0, 65536, -720881, 0, 65536, -655345, 0, 65536, -589809, 0, 65536, -458738, 0, 65536, -1245170, 0, 262144, -1179634, 0, 262144, -1114098, 0, 262144, -1048562, 0, 262144, -983026, 0, 262144, -917490, 0, 262144, -1245169, 0, 262144, -1179633, 0, 262144, -1114097, 0, 262144, -1048561, 0, 262144, -983025, 0, 262144, -917489, 0, 262144, -1638386, 0, 262144, -1572850, 0, 262144, -1507314, 0, 262144, -1441778, 0, 262144, -1376242, 0, 262144, -1310706, 0, 262144, -1638385, 0, 262144, -1572849, 0, 262144, -1507313, 0, 262144, -1441777, 0, 262144, -1376241, 0, 262144, -1310705, 0, 262144, -589813, 0, 196608, -524277, 0, 196608, -458741, 0, 196608, -589812, 0, 196608, -524276, 0, 196608, -458740, 0, 196608, -524278, 0, 196608, -589814, 0, 196608, -589815, 0, 196608, -589816, 0, 196608, -524280, 0, 196608, -524279, 0, 196608, -524281, 0, 196608, -524282, 0, 196608, -524283, 0, 196608, -524284, 0, 196608, -524285, 0, 196608, -524286, 0, 196608, -524287, 0, 196608, -524288, 0, 196608, -458753, 0, 196608, -393217, 0, 196608, -327681, 0, 196608, -262145, 0, 196608, -196609, 0, 196608, -458752, 0, 196608, -393216, 0, 196608, -327680, 0, 196608, -262144, 0, 196608, -458751, 0, 196608, -393215, 0, 196608, -327679, 0, 196608, -262143, 0, 196608, -458750, 0, 196608, -393214, 0, 196608, -327678, 0, 196608, -262142, 0, 196608, 196613, 0, 65536, 262149, 0, 65536, 327685, 0, 65536, 196614, 0, 65536, 262150, 0, 65536, 327686, 0, 65536, 196615, 0, 65536, 262151, 0, 65536, 327687, 0, 65536, 196618, 0, 65536, 262154, 0, 65536, 327690, 0, 65536, 196619, 0, 65536, 262155, 0, 65536, 327691, 0, 65536, 196620, 0, 65536, 262156, 0, 65536, 327692, 0, 65536, 196621, 0, 65536, 262157, 0, 65536, 327693, 0, 65536, 196622, 0, 65536, 262158, 0, 65536, 327694, 0, 65536, 131085, 0, 65536, 131086, 0, 65536, 131078, 0, 65536, 131079, 0, 65536, -458742, 3, 131072)
+layer_0/tile_data = PackedInt32Array(262143, 0, 131072, 196607, 0, 131072, 131072, 0, 131072, 65536, 0, 131072, 0, 0, 131072, -1, 0, 131072, 65535, 0, 131072, 131071, 0, 131072, -65536, 0, 131072, 196608, 0, 131072, -65535, 0, 131072, 1, 0, 131072, 65537, 0, 131072, 131073, 0, 131072, 196609, 0, 131072, -65534, 0, 131072, 2, 0, 131072, 65538, 0, 131072, 131074, 0, 131072, 196610, 0, 131072, -65533, 0, 131072, 3, 0, 131072, 65539, 0, 131072, 131075, 0, 131072, 196611, 0, 131072, -65537, 3, 262144, -131072, 3, 262144, -131071, 3, 262144, -131070, 3, 262144, -131069, 3, 262144, -65532, 3, 131072, 65540, 0, 196608, 131076, 3, 65536, 196612, 3, 65536, 262147, 3, 262144, 262146, 3, 262144, 262145, 3, 262144, 262144, 3, 262144, 327679, 3, 262144, 262142, 3, 262144, 196606, 3, 262144, 131070, 3, 262144, 65534, 3, 262144, -2, 3, 262144, 262148, 3, 262144, 327678, 3, 262144, -131068, 3, 0, -65538, 3, 262144, 4, 0, 131072, 5, 0, 196608, 6, 0, 196608, 7, 0, 196608, 8, 0, 196608, 9, 0, 196608, 10, 0, 196608, -65531, 3, 131072, -65530, 3, 131072, -65528, 3, 262144, -65527, 3, 262144, -65526, 3, 0, -131062, 3, 262144, -196598, 3, 262144, -262134, 3, 262144, -327670, 3, 262144, -393206, 3, 262144, -393207, 3, 262144, -393208, 3, 262144, -393209, 3, 262144, -393210, 3, 262144, -393211, 3, 262144, -393212, 3, 0, -327676, 3, 0, -262140, 3, 0, -196604, 3, 0, 65541, 0, 196608, 65542, 0, 196608, 65543, 0, 196608, 65544, 0, 196608, 65545, 0, 196608, 65546, 0, 196608, -65529, 0, 131072, -131063, 0, 131072, -327675, 0, 131072, -262139, 0, 131072, -196603, 0, 131072, -131067, 0, 131072, -327674, 0, 131072, -262138, 0, 131072, -196602, 0, 131072, -131066, 0, 131072, -327673, 0, 131072, -262137, 0, 131072, -196601, 0, 131072, -131065, 0, 131072, -327672, 0, 131072, -262136, 0, 131072, -196600, 0, 131072, -131064, 0, 131072, -327671, 0, 131072, -262135, 0, 131072, -196599, 0, 131072, -393205, 0, 131072, -327669, 0, 131072, -262133, 0, 131072, -196597, 0, 131072, -131061, 0, 131072, -65525, 0, 131072, 11, 0, 131072, 65547, 0, 131072, -393204, 0, 131072, -327668, 0, 131072, -262132, 0, 131072, -196596, 0, 131072, -131060, 0, 131072, -65524, 0, 131072, 12, 0, 131072, 65548, 0, 131072, -393203, 0, 131072, -327667, 0, 131072, -262131, 0, 131072, -196595, 0, 131072, -131059, 0, 131072, -65523, 0, 131072, 13, 0, 131072, 65549, 0, 131072, -393202, 0, 131072, -327666, 0, 131072, -262130, 0, 131072, -196594, 0, 131072, -131058, 0, 131072, -65522, 0, 131072, 14, 0, 131072, 65550, 0, 131072, -393201, 0, 131072, -327665, 0, 131072, -262129, 0, 131072, -196593, 0, 131072, -131057, 0, 131072, -65521, 0, 131072, 15, 0, 131072, 65551, 0, 131072, -458739, 3, 262144, -458737, 0, 65536, -458736, 3, 262144, -393200, 3, 262144, -196592, 3, 262144, -131056, 3, 262144, -65520, 3, 262144, 16, 3, 262144, 65552, 3, 262144, 131088, 3, 262144, 131087, 3, 262144, 131084, 3, 262144, 131083, 3, 262144, 131082, 3, 131072, 131081, 3, 131072, 131080, 3, 131072, 131077, 3, 65536, 327684, 3, 262144, 393220, 3, 262144, 458756, 3, 0, 458757, 3, 0, 458758, 3, 0, 458759, 3, 0, 458760, 3, 0, 458761, 3, 0, 393225, 3, 196608, 327689, 3, 196608, 262153, 3, 196608, 196617, 3, 196608, 458762, 3, 0, 458763, 3, 0, 458764, 3, 0, 458765, 3, 0, 458766, 3, 0, 458767, 3, 0, 458768, 3, 0, 196624, 3, 0, 262160, 3, 0, 327696, 3, 0, 393232, 3, 0, -589817, 3, 65536, -589818, 3, 65536, -589819, 3, 65536, -589820, 3, 65536, -589821, 3, 65536, -589822, 3, 65536, -589823, 3, 65536, -589824, 3, 65536, -524289, 3, 65536, -524290, 3, 65536, -458754, 3, 262144, -393218, 3, 262144, -327682, 3, 262144, -262146, 3, 262144, -196610, 3, 262144, -131074, 3, 262144, -524275, 3, 262144, -589811, 3, 262144, -655347, 3, 262144, -655348, 3, 262144, -655349, 3, 262144, -655350, 3, 262144, -655351, 3, 65536, -655352, 3, 65536, -655353, 3, 65536, -327664, 3, 262144, -262128, 3, 262144, -524272, 3, 0, -589808, 3, 0, -655344, 3, 0, -720880, 3, 0, -786416, 3, 0, -720883, 3, 0, -786419, 3, 196608, -851955, 3, 196608, -851952, 3, 0, -917488, 3, 0, -917491, 3, 196608, -983027, 3, 196608, -983024, 3, 0, -851954, 0, 65536, -851953, 0, 65536, -786418, 0, 65536, -720882, 0, 65536, -655346, 0, 65536, -589810, 0, 65536, -524274, 0, 65536, -786417, 0, 65536, -720881, 0, 65536, -655345, 0, 65536, -589809, 0, 65536, -458738, 0, 65536, -1245170, 0, 262144, -1179634, 0, 262144, -1114098, 0, 262144, -1048562, 0, 262144, -983026, 0, 262144, -917490, 0, 262144, -1245169, 0, 262144, -1179633, 0, 262144, -1114097, 0, 262144, -1048561, 0, 262144, -983025, 0, 262144, -917489, 0, 262144, -1638386, 0, 262144, -1572850, 0, 262144, -1507314, 0, 262144, -1441778, 0, 262144, -1376242, 0, 262144, -1310706, 0, 262144, -1638385, 0, 262144, -1572849, 0, 262144, -1507313, 0, 262144, -1441777, 0, 262144, -1376241, 0, 262144, -1310705, 0, 262144, -589813, 0, 196608, -524277, 0, 196608, -458741, 0, 196608, -589812, 0, 196608, -524276, 0, 196608, -458740, 3, 262144, -524278, 0, 196608, -589814, 0, 196608, -589815, 0, 196608, -589816, 0, 196608, -524280, 0, 196608, -524279, 0, 196608, -524281, 0, 196608, -524282, 0, 196608, -524283, 0, 196608, -524284, 0, 196608, -524285, 0, 196608, -524286, 0, 196608, -524287, 0, 196608, -524288, 0, 196608, -458753, 0, 196608, -393217, 0, 196608, -327681, 0, 196608, -262145, 0, 196608, -196609, 0, 196608, -458752, 0, 196608, -393216, 0, 196608, -327680, 0, 196608, -262144, 0, 196608, -458751, 0, 196608, -393215, 0, 196608, -327679, 0, 196608, -262143, 0, 196608, -458750, 0, 196608, -393214, 0, 196608, -327678, 0, 196608, -262142, 0, 196608, 196613, 0, 65536, 262149, 0, 65536, 327685, 0, 65536, 196614, 0, 65536, 262150, 0, 65536, 327686, 0, 65536, 196615, 0, 65536, 262151, 0, 65536, 327687, 0, 65536, 196618, 0, 65536, 262154, 0, 65536, 327690, 0, 65536, 196619, 0, 65536, 262155, 0, 65536, 327691, 0, 65536, 196620, 0, 65536, 262156, 0, 65536, 327692, 0, 65536, 196621, 0, 65536, 262157, 0, 65536, 327693, 0, 65536, 196622, 0, 65536, 262158, 0, 65536, 327694, 0, 65536, 131085, 0, 65536, 131086, 0, 65536, 131078, 0, 65536, 131079, 0, 65536, -458742, 3, 131072, 196623, 3, 65536, 262159, 3, 65536, 327695, 3, 65536, 393231, 3, 65536)
 
 [node name="Decor" type="Node" parent="TheHouse/1stPhase"]
 
@@ -90,12 +216,21 @@ texture = ExtResource("8_3m6vf")
 position = Vector2(1830, 12)
 scale = Vector2(1.28566, 0.772954)
 texture = ExtResource("9_ek1ym")
+script = SubResource("GDScript_s88ni")
+required_key = "Front_Door_Keys"
 
 [node name="StaticBody2D" type="StaticBody2D" parent="TheHouse/1stPhase/Decor/Door"]
 collision_layer = 8
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TheHouse/1stPhase/Decor/Door/StaticBody2D"]
 polygon = PackedVector2Array(-29.5566, 27.1685, 56.0022, 87.9742, 104.226, 50.4558, 27.2234, -15.5249)
+
+[node name="Area2D" type="Area2D" parent="TheHouse/1stPhase/Decor/Door"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TheHouse/1stPhase/Decor/Door/Area2D"]
+position = Vector2(-12.4449, 47.8683)
+shape = SubResource("CircleShape2D_wdt7s")
 
 [node name="Door3" type="Sprite2D" parent="TheHouse/1stPhase/Decor"]
 position = Vector2(562, 204)
@@ -120,22 +255,6 @@ scale = Vector2(1.10992, 1.10992)
 texture = ExtResource("14_3sqil")
 flip_h = true
 
-[node name="Door2" type="Sprite2D" parent="TheHouse/1stPhase/Decor"]
-position = Vector2(1220, 150)
-rotation = -0.0158927
-scale = Vector2(2.16474, 1.21348)
-texture = ExtResource("9_ek1ym")
-
-[node name="StaticBody2D2" type="StaticBody2D" parent="TheHouse/1stPhase/Decor/Door2"]
-position = Vector2(5.01462, 7.55982)
-rotation = 0.0283461
-scale = Vector2(0.735794, 0.822636)
-skew = -0.0194367
-collision_layer = 8
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TheHouse/1stPhase/Decor/Door2/StaticBody2D2"]
-polygon = PackedVector2Array(-31.3998, 18.03, 27.0038, 68.1134, 28.8878, 3.00499, -15.6999, -21.035)
-
 [node name="NightStand2" type="Sprite2D" parent="TheHouse/1stPhase/Decor"]
 position = Vector2(610, 212)
 texture = ExtResource("6_t885g")
@@ -155,10 +274,88 @@ position = Vector2(923, 271)
 scale = Vector2(1.57996, 1.57996)
 texture = ExtResource("11_cj5ip")
 
+[node name="StaticBody2D" type="StaticBody2D" parent="TheHouse/1stPhase/Decor/Couch"]
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TheHouse/1stPhase/Decor/Couch/StaticBody2D"]
+position = Vector2(-1.8988, 7.59512)
+rotation = -0.435145
+shape = SubResource("RectangleShape2D_kc2t8")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="TheHouse/1stPhase/Decor/Couch"]
+position = Vector2(60.761, 34.178)
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TheHouse/1stPhase/Decor/Couch/StaticBody2D2"]
+position = Vector2(-1.8988, 7.59512)
+rotation = -0.435145
+shape = SubResource("RectangleShape2D_kc2t8")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="TheHouse/1stPhase/Decor/Couch"]
+position = Vector2(-494.949, -182.916)
+rotation = 0.988789
+scale = Vector2(1.04733, 1.15403)
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TheHouse/1stPhase/Decor/Couch/StaticBody2D3"]
+position = Vector2(-1.8988, 7.59512)
+rotation = -0.435145
+shape = SubResource("RectangleShape2D_kc2t8")
+
 [node name="PhotosA" type="Sprite2D" parent="TheHouse/1stPhase/Decor"]
 z_index = 1
 position = Vector2(410, 145)
 texture = ExtResource("12_x1m8q")
+
+[node name="Counter3" type="Sprite2D" parent="TheHouse/1stPhase/Decor"]
+position = Vector2(498, 417)
+texture = ExtResource("13_n5phb")
+
+[node name="Counter2" type="Sprite2D" parent="TheHouse/1stPhase/Decor"]
+position = Vector2(466, 432)
+texture = ExtResource("13_n5phb")
+
+[node name="Fridge" type="Sprite2D" parent="TheHouse/1stPhase/Decor"]
+position = Vector2(464, 435)
+texture = ExtResource("14_qhd8y")
+
+[node name="Counter" type="Sprite2D" parent="TheHouse/1stPhase/Decor"]
+position = Vector2(405, 462)
+texture = ExtResource("13_n5phb")
+
+[node name="Counter6" type="Sprite2D" parent="TheHouse/1stPhase/Decor"]
+position = Vector2(111, 286)
+texture = ExtResource("13_n5phb")
+
+[node name="Counter7" type="Sprite2D" parent="TheHouse/1stPhase/Decor"]
+position = Vector2(82, 298)
+texture = ExtResource("13_n5phb")
+
+[node name="Counter4" type="Sprite2D" parent="TheHouse/1stPhase/Decor"]
+position = Vector2(647, 471)
+texture = ExtResource("13_n5phb")
+flip_h = true
+
+[node name="Counter5" type="Sprite2D" parent="TheHouse/1stPhase/Decor"]
+position = Vector2(250, 271)
+texture = ExtResource("13_n5phb")
+flip_h = true
+
+[node name="OvalOffice" type="Sprite2D" parent="TheHouse/1stPhase/Decor"]
+position = Vector2(58, 293)
+scale = Vector2(0.793031, 0.793031)
+texture = ExtResource("15_0gs2u")
+
+[node name="InvisiWall_0" type="StaticBody2D" parent="TheHouse/1stPhase/Decor"]
+visible = false
+collision_layer = 8
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TheHouse/1stPhase/Decor/InvisiWall_0"]
+polygon = PackedVector2Array(61, 191, 391, 34, 441, 58, 105, 224)
+
+[node name="Polygon2D" type="Polygon2D" parent="TheHouse/1stPhase/Decor/InvisiWall_0"]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(193, 131, -128, 305, 634, 712, 1897, 93, 1728, -30, 1165, 9, 753, 244, 418, 40)
 
 [node name="FogOfWar" type="Node" parent="TheHouse/1stPhase"]
 
@@ -169,6 +366,20 @@ polygon = PackedVector2Array(332, 66, 505, 155, 525, 134, 640, 179, 759, 274, 11
 [node name="OfficeFogOfWar" type="Polygon2D" parent="TheHouse/1stPhase/FogOfWar"]
 color = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(436, 24, 84, -166, 506, -373, 1084, -89, 1168, -120, 1498, 55, 1298, 164, 1285, 105, 1166, 65, 1102, 93, 705, -116)
+
+[node name="Locks" type="Node2D" parent="TheHouse/1stPhase"]
+
+[node name="Locked_Door" parent="TheHouse/1stPhase/Locks" instance=ExtResource("13_1kf08")]
+position = Vector2(1189, 133)
+required_key = "Office_Key"
+
+[node name="Keys" type="Node2D" parent="TheHouse/1stPhase"]
+
+[node name="FrontDoorKeyspawn" type="Marker2D" parent="TheHouse/1stPhase/Keys"]
+position = Vector2(96, 283)
+
+[node name="PhoneSpawn" type="Marker2D" parent="TheHouse/1stPhase/Keys"]
+position = Vector2(52, 330)
 
 [node name="2ndPhase" type="TileMap" parent="TheHouse"]
 visible = false
@@ -289,15 +500,38 @@ text = "Radio Room
 "
 
 [node name="AbientLight" type="CanvasModulate" parent="."]
-color = Color(1, 0.647059, 0, 1)
+color = Color(0.729412, 0.521569, 0.360784, 1)
 
 [node name="PC" parent="." instance=ExtResource("13_rxofp")]
 z_index = 1
-position = Vector2(59, -22)
-PC_Stats = {
-"sleep_decay_rate": 15.5,
-"sleep_max": 100.0
-}
+position = Vector2(1662, 100)
 
 [node name="Ticker" type="Timer" parent="."]
 wait_time = 2.5
+
+[node name="Level_Anims" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_txt7s")
+}
+
+[node name="Lvl_0_BK_Stream" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("18_d2kyc")
+bus = &"BackgroundMusic"
+
+[node name="Crows_Audio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("17_iw6oi")
+volume_db = -6.405
+bus = &"AudioFX"
+
+[node name="CrowTime" type="Timer" parent="Crows_Audio"]
+
+[node name="Calendar" type="Sprite2D" parent="."]
+position = Vector2(603, 419)
+scale = Vector2(0.685699, 0.685699)
+texture = ExtResource("18_cn2s1")
+flip_h = true
+script = SubResource("GDScript_pjd2y")
+
+[node name="Area2D" type="Area2D" parent="Calendar"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Calendar/Area2D"]
