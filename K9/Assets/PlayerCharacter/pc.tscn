@@ -1,15 +1,92 @@
-[gd_scene load_steps=10 format=3 uid="uid://v5v3d7sdtm24"]
+[gd_scene load_steps=35 format=3 uid="uid://v5v3d7sdtm24"]
 
 [ext_resource type="Script" path="res://K9/Assets/PlayerCharacter/pc_Script.gd" id="1_hpfj1"]
 [ext_resource type="Texture2D" uid="uid://dkodph71yfleb" path="res://K9/Modules/2D/CapsuleGreybox.png" id="2_ammco"]
 [ext_resource type="Texture2D" uid="uid://dblsx7314c611" path="res://K9/Modules/2D/SpotLightA.png" id="3_3oq8h"]
 [ext_resource type="Texture2D" uid="uid://dtkq44gsafoya" path="res://K9/Modules/2D/ScreenRimA.png" id="4_31vav"]
+[ext_resource type="PackedScene" uid="uid://qlbo22iiyo34" path="res://K9/Assets/TextBox/text_box.tscn" id="5_1ijhs"]
+[ext_resource type="Texture2D" uid="uid://dwpgtjfir5may" path="res://KHZ/Modules/2D/Back 1@3x.png" id="5_hwk7x"]
+[ext_resource type="Texture2D" uid="uid://dkd38m56xbk1n" path="res://KHZ/Modules/2D/Back 2@3x.png" id="6_swhlk"]
+[ext_resource type="Texture2D" uid="uid://dcto18xt7xbor" path="res://KHZ/Modules/2D/GameOver@3x.png" id="7_1e2xy"]
+[ext_resource type="Texture2D" uid="uid://cquspfw8xqr3h" path="res://K9/Modules/2D/Stat_Bar_circle_Merged.png" id="8_mr41q"]
+[ext_resource type="Texture2D" uid="uid://cnwfjchkawl5v" path="res://KHZ/Modules/2D/Front 1@3x.png" id="9_2kkhs"]
+[ext_resource type="Texture2D" uid="uid://cbt8rp6sospw3" path="res://K9/Modules/2D/HeartFilling.png" id="9_eh3bg"]
+[ext_resource type="Texture2D" uid="uid://b33v3yojboxi6" path="res://KHZ/Modules/2D/Front 2@3x.png" id="10_4slii"]
+[ext_resource type="Texture2D" uid="uid://c2ohxhklt6p7b" path="res://K9/Modules/2D/HeartOutline.png" id="10_55mk0"]
+[ext_resource type="Texture2D" uid="uid://bebtvdlvma2w6" path="res://KHZ/Modules/2D/Left 1@3x.png" id="11_i5v0p"]
+[ext_resource type="Texture2D" uid="uid://cuw515eqsysd" path="res://KHZ/Modules/2D/Left 2@3x.png" id="12_kwkun"]
+[ext_resource type="Texture2D" uid="uid://l3xyt6fhiipi" path="res://KHZ/Modules/2D/Right 1@3x.png" id="13_yoo1x"]
+[ext_resource type="Texture2D" uid="uid://doiddspeobbih" path="res://KHZ/Modules/2D/Right 2@3x.png" id="14_ap8qb"]
+[ext_resource type="Texture2D" uid="uid://6uu2jaa3s5oc" path="res://K9/Modules/2D/PlainCircle.png" id="18_wqn6y"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ivhgk"]
 radius = 23.0217
 
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_oa1ek"]
-polygon = PackedVector2Array(-29, -50, -48, -14, -44, 28, -34, 55, -4, 63, 30, 56, 45, 27, 46, -16, 30, -49, -2, -59)
+[sub_resource type="SpriteFrames" id="SpriteFrames_n8g06"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_2kkhs")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_hwk7x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_swhlk")
+}],
+"loop": true,
+"name": &"back",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_1e2xy")
+}],
+"loop": true,
+"name": &"cry",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_2kkhs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_4slii")
+}],
+"loop": true,
+"name": &"front",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_i5v0p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_kwkun")
+}],
+"loop": true,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_yoo1x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_ap8qb")
+}],
+"loop": true,
+"name": &"right",
+"speed": 5.0
+}]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_amq6d"]
+polygon = PackedVector2Array(-16, 46, -11, 38, -12, 27, -13, 16, -9, 7, -9, 1, 1, 0, 3, 6, 5, 14, 15, 22, 9, 30, 13, 47, 12, 50, 5, 50, 0, 34, -5, 35, -7, 45, -11, 52)
 
 [sub_resource type="Animation" id="Animation_rmpjw"]
 resource_name = "Pulse"
@@ -96,21 +173,247 @@ _data = {
 "RESET": SubResource("Animation_hppcy")
 }
 
+[sub_resource type="GDScript" id="GDScript_qiplc"]
+resource_name = "SeconfdWindScript"
+script/source = "extends Control
+
+
+@onready var texture_progress_bar = $TextureProgressBar
+@onready var life : int
+
+signal player_failed
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	life = 75
+	$Second_wind_timer.connect('timeout', death)
+	start_second_wind()
+	pass # Replace with function body.
+	
+
+func _process(delta):
+	texture_progress_bar.value = life
+	
+	if $Second_wind_timer.is_stopped() == false:
+		drain_life()
+	
+	if life <= 0:
+		death()
+	
+	if life >= 100:
+		K9Globals.player_sleep = 100
+		visible = false
+		get_tree().paused = false
+	pass
+
+func start_second_wind():
+	#life = 100
+	$Second_wind_timer.start()
+	
+
+	pass
+	
+
+func _input(event):
+	if Input.is_action_just_pressed(\"Player_interact\"):
+		life += 10.25
+	pass
+	
+
+
+func drain_life():
+	life -= 0.005
+	
+	#if Input.is_action_just_pressed(\"Player_interact\"):
+		#life += 10.25
+		#print('losing life' + 'fought the sleep')
+	pass
+
+func death():
+	emit_signal('player_failed')
+	pass
+	
+
+@onready var MM_P = load(\"res://K9/Lvls/MM/main_menu.tscn\")
+
+func _on_button_pressed():
+	get_tree().change_scene_to_packed(MM_P)
+	pass # Replace with function body.
+"
+
+[sub_resource type="Animation" id="Animation_smsdg"]
+resource_name = "Pulse"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureProgressBar:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.85, 0.95), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_qphwe"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureProgressBar:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tvdvg"]
+_data = {
+"Pulse": SubResource("Animation_smsdg"),
+"RESET": SubResource("Animation_qphwe")
+}
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_j6c3u"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 526.05
+gravity = Vector3(0, 0, 0)
+linear_accel_min = -100.0
+radial_accel_min = -100.0
+radial_accel_max = -100.0
+tangential_accel_min = -100.0
+tangential_accel_max = -100.0
+scale_min = 0.01
+scale_max = 0.05
+
+[sub_resource type="Animation" id="Animation_ble7m"]
+resource_name = "Creepy"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScreenRimA:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 0.427451, 1, 1), Color(1, 0.427451, 1, 1), Color(0.564706, 0.694118, 0.984314, 1), Color(1, 0.427451, 1, 1), Color(0.705882, 0.737255, 0, 1), Color(1, 0.427451, 1, 1), Color(1, 0.427451, 1, 1), Color(1, 0.427451, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationPlayer:speed_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.05]
+}
+
+[sub_resource type="Animation" id="Animation_15ij8"]
+resource_name = "Default"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScreenRimA:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ScreenRimA:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_gud5j"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScreenRimA:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ScreenRimA:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationPlayer:speed_scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.25]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bv0hx"]
+_data = {
+"Creepy": SubResource("Animation_ble7m"),
+"Default": SubResource("Animation_15ij8"),
+"RESET": SubResource("Animation_gud5j")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ban18"]
+bg_color = Color(0.447059, 0.298039, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.00392157, 0, 1)
+border_blend = true
+
 [node name="PC" type="CharacterBody2D"]
+collision_mask = 12
 script = ExtResource("1_hpfj1")
 
 [node name="CapsuleGreybox" type="Sprite2D" parent="."]
+visible = false
 texture = ExtResource("2_ammco")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 40)
 shape = SubResource("CircleShape2D_ivhgk")
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-occluder = SubResource("OccluderPolygon2D_oa1ek")
-occluder_light_mask = 2
-
 [node name="PCcam" type="Camera2D" parent="."]
+zoom = Vector2(1.75, 1.75)
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
 drag_left_margin = 0.05
@@ -119,15 +422,31 @@ drag_right_margin = 0.05
 [node name="PCHand" type="Node2D" parent="."]
 
 [node name="PCFlashlight" type="PointLight2D" parent="PCHand"]
+visible = false
 position = Vector2(7.99997, 4)
 rotation = 1.57666
-scale = Vector2(1, 1)
+color = Color(0.764706, 0.643137, 0, 1)
 shadow_enabled = true
 shadow_filter = 2
 texture = ExtResource("3_3oq8h")
 offset = Vector2(-0.75, -261.725)
 
-[node name="PC_UI" type="Control" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-22, -24)
+scale = Vector2(0.144516, 0.144516)
+sprite_frames = SubResource("SpriteFrames_n8g06")
+animation = &"Idle"
+centered = false
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="AnimatedSprite2D"]
+position = Vector2(159.152, 179.911)
+scale = Vector2(8.52178, 8.52178)
+occluder = SubResource("OccluderPolygon2D_amq6d")
+occluder_light_mask = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PC_UI" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -135,20 +454,240 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PC_StatusVFX" type="Control" parent="PC_UI"]
+[node name="PC_StatusVFX" type="Control" parent="CanvasLayer/PC_UI"]
 visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="ScreenRimA" type="Sprite2D" parent="PC_UI/PC_StatusVFX"]
+[node name="ScreenRimA" type="Sprite2D" parent="CanvasLayer/PC_UI/PC_StatusVFX"]
 position = Vector2(1, 3)
 scale = Vector2(0.676924, 0.476924)
 texture = ExtResource("4_31vav")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="PC_UI/PC_StatusVFX/ScreenRimA"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/PC_UI/PC_StatusVFX/ScreenRimA"]
 libraries = {
 "": SubResource("AnimationLibrary_ggssi")
 }
 autoplay = "Pulse"
 speed_scale = 1.5
+
+[node name="Text_Box" parent="CanvasLayer/PC_UI" instance=ExtResource("5_1ijhs")]
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 267.0
+offset_top = 426.0
+offset_right = 967.0
+offset_bottom = 626.0
+grow_horizontal = 1
+
+[node name="SleepBar" type="TextureProgressBar" parent="CanvasLayer/PC_UI"]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 505.0
+offset_right = 263.0
+offset_bottom = 745.0
+scale = Vector2(0.533329, 0.533329)
+value = 15.0
+fill_mode = 5
+texture_under = ExtResource("8_mr41q")
+texture_progress = ExtResource("8_mr41q")
+tint_under = Color(0.654902, 0.243137, 0, 1)
+tint_progress = Color(0.254902, 0.415686, 1, 1)
+
+[node name="Label" type="Label" parent="CanvasLayer/PC_UI/SleepBar"]
+layout_mode = 0
+offset_left = 86.2507
+offset_top = 116.251
+offset_right = 126.251
+offset_bottom = 139.251
+scale = Vector2(1.48675, 1.59478)
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+text = "ZZzz"
+
+[node name="DeathIsntEndScreen" type="Control" parent="CanvasLayer/PC_UI"]
+process_mode = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -41.0
+offset_top = -67.0
+offset_right = -1.0
+offset_bottom = -27.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_qiplc")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/PC_UI/DeathIsntEndScreen"]
+layout_mode = 0
+offset_left = -2.0
+offset_top = -13.0
+offset_right = 126.0
+offset_bottom = 115.0
+value = 35.0
+fill_mode = 3
+texture_under = ExtResource("9_eh3bg")
+texture_over = ExtResource("10_55mk0")
+texture_progress = ExtResource("9_eh3bg")
+tint_under = Color(0.301961, 0, 0, 1)
+tint_progress = Color(1, 0, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/PC_UI/DeathIsntEndScreen"]
+libraries = {
+"": SubResource("AnimationLibrary_tvdvg")
+}
+autoplay = "Pulse"
+
+[node name="Second_wind_timer" type="Timer" parent="CanvasLayer/PC_UI/DeathIsntEndScreen"]
+wait_time = 15.0
+one_shot = true
+
+[node name="Button" type="Button" parent="CanvasLayer/PC_UI/DeathIsntEndScreen"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = -225.0
+offset_right = 92.0
+offset_bottom = -194.0
+text = "Give up"
+
+[node name="Label" type="Label" parent="CanvasLayer/PC_UI/DeathIsntEndScreen"]
+layout_mode = 0
+offset_left = -173.0
+offset_top = -147.0
+offset_right = -59.0
+offset_bottom = -124.0
+scale = Vector2(4.0858, 4.0858)
+theme_override_colors/font_color = Color(0.437799, 0.616361, 1, 1)
+text = "SECOND WIND"
+
+[node name="Label2" type="Label" parent="CanvasLayer/PC_UI/DeathIsntEndScreen"]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 148.0
+offset_right = 143.0
+offset_bottom = 171.0
+theme_override_colors/font_color = Color(0.437799, 0.616361, 1, 1)
+text = "Tap 'E' to wake up!"
+
+[node name="Controlls" type="Label" parent="CanvasLayer/PC_UI"]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 568.0
+offset_right = 261.0
+offset_bottom = 643.0
+text = "X = task
+
+E = Interact"
+
+[node name="AmbientScreenFX" type="Control" parent="CanvasLayer/PC_UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ChargeUpFX" type="GPUParticles2D" parent="CanvasLayer/PC_UI/AmbientScreenFX"]
+visible = false
+position = Vector2(-24, 20)
+amount = 200
+process_material = SubResource("ParticleProcessMaterial_j6c3u")
+texture = ExtResource("18_wqn6y")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/PC_UI/AmbientScreenFX"]
+libraries = {
+"": SubResource("AnimationLibrary_bv0hx")
+}
+speed_scale = 0.25
+
+[node name="ScreenRimA" type="Sprite2D" parent="CanvasLayer/PC_UI/AmbientScreenFX"]
+position = Vector2(596, 324)
+texture = ExtResource("4_31vav")
+
+[node name="YouDied" type="Panel" parent="CanvasLayer/PC_UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -74.0
+offset_top = 34.0
+offset_right = 126.0
+offset_bottom = 74.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/PC_UI/YouDied"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "You never woke up,
+game over"
+horizontal_alignment = 1
+
+[node name="You win!" type="Panel" parent="CanvasLayer/PC_UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -200.0
+offset_right = 150.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/PC_UI/You win!"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "You woke up and made it out of your warped reality of a home but upon leaving your home you realize you are no longer inside the well in which you lived. The landscape before resembles nothing you've ever seen in your life. Your plans to get off world have failed, for now. 
+
+Thank you for playing our game and we hope you join the WsG newsletter, and enjoy the rest of the jam!"
+
+[node name="SleepTimer" type="Timer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+visible = false
+offset_left = -155.0
+offset_top = -82.0
+offset_right = 42.0
+offset_bottom = -12.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Label" type="Label" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_ban18")
+vertical_alignment = 1
+
+[connection signal="player_failed" from="CanvasLayer/PC_UI/DeathIsntEndScreen" to="." method="_on_death_isnt_end_screen_player_failed"]
+[connection signal="pressed" from="CanvasLayer/PC_UI/DeathIsntEndScreen/Button" to="CanvasLayer/PC_UI/DeathIsntEndScreen" method="_on_button_pressed"]

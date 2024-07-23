@@ -1,4 +1,4 @@
-@tool
+#@tool
 extends Node2D
 class_name K9_DevRoom
 
@@ -23,8 +23,8 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	
-	sunshine.rotation_degrees += 0.01
+	#await get_tree().create_timer(K9Globals.time_tick).timeout
+	#sunshine.rotation_degrees += 0.01
 	pass
 
 

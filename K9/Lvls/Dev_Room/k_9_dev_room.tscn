@@ -1,99 +1,14 @@
-[gd_scene load_steps=15 format=3 uid="uid://fofrjf76bkex"]
+[gd_scene load_steps=14 format=3 uid="uid://fofrjf76bkex"]
 
-[ext_resource type="PackedScene" uid="uid://dg5bosf2p7unp" path="res://WsG_ToolBox/TheMapMaker/MapMakerIsometric.tscn" id="1_jib66"]
 [ext_resource type="Script" path="res://K9/Lvls/Dev_Room/k_9_dev_room_controller.gd" id="1_w2kb0"]
-[ext_resource type="Texture2D" uid="uid://dtkq44gsafoya" path="res://K9/Modules/2D/ScreenRimA.png" id="2_31f2v"]
 [ext_resource type="Texture2D" uid="uid://6uu2jaa3s5oc" path="res://K9/Modules/2D/PlainCircle.png" id="4_6t3ny"]
 [ext_resource type="Texture2D" uid="uid://dkodph71yfleb" path="res://K9/Modules/2D/CapsuleGreybox.png" id="5_p3s2c"]
 [ext_resource type="PackedScene" uid="uid://v5v3d7sdtm24" path="res://K9/Assets/PlayerCharacter/pc.tscn" id="6_jvmte"]
-
-[sub_resource type="Animation" id="Animation_rmpjw"]
-resource_name = "Pulse"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 0.462745, 0.392157, 1), Color(1, 1, 1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(1.37, 0.965), Vector2(1.21, 0.657), Vector2(1.37, 0.965)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimationPlayer:speed_scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.5]
-}
-
-[sub_resource type="Animation" id="Animation_hppcy"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0.676924, 0.476924)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimationPlayer:speed_scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.5]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_ggssi"]
-_data = {
-"Pulse": SubResource("Animation_rmpjw"),
-"RESET": SubResource("Animation_hppcy")
-}
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_ohc2c"]
-radius = 17.1172
+[ext_resource type="PackedScene" uid="uid://b77okb2oj6bl7" path="res://K9/Assets/Keys/key_0.tscn" id="7_5eaks"]
+[ext_resource type="PackedScene" uid="uid://d1vl305e2lax0" path="res://K9/Assets/Interactables/General_static_objects.tscn" id="7_l4dob"]
+[ext_resource type="PackedScene" uid="uid://cxnrfqvc38c6t" path="res://K9/Assets/Keys/Froont_Door_Keys.tscn" id="8_eidqk"]
+[ext_resource type="PackedScene" uid="uid://dei0okrdcuiu8" path="res://K9/Assets/Locks/locked_door.tscn" id="9_d45tw"]
+[ext_resource type="Texture2D" uid="uid://c2pwr8l8vrdg7" path="res://K9/Modules/2D/EnviromentalModules/lamp.png" id="15_mcof8"]
 
 [sub_resource type="Animation" id="Animation_symln"]
 resource_name = "Pulse"
@@ -132,40 +47,8 @@ _data = {
 "RESET": SubResource("Animation_m1euc")
 }
 
-[sub_resource type="GDScript" id="GDScript_wpeo8"]
-resource_name = "RNJesusScript"
-script/source = "extends Node2D
-
-#var item_spawn_list = {
-	#0:
-		#load(\"res://K9/Modules/2D/PlainCircle.png\"),
-	#1:
-		#load(\"res://K9/Modules/2D/SpotLightA.png\"),
-	#2:
-		#load(\"res://K9/Modules/2D/WoodShedLogoB_4.png\"),
-	#}
-
-func _ready():
-	RNG_spawn_from_list()
-	pass
-	
-
-func RNG_spawn_from_list(): #the important thing is spawning from a global list we can save
-	
-	var the_list = K9GlobalItemList.item_spawn_list
-	var rng_max = (the_list.size() - 1) #avoids calling higher than dict holds
-	var the_chosen = randi_range(0, rng_max)
-	
-	$Sprite2D.texture = the_list[the_chosen]
-	
-	pass
-	
-
-
-
-
-
-"
+[sub_resource type="CircleShape2D" id="CircleShape2D_ohc2c"]
+radius = 17.1172
 
 [node name="K9_Dev_Room" type="Node2D"]
 script = ExtResource("1_w2kb0")
@@ -173,47 +56,12 @@ script = ExtResource("1_w2kb0")
 [node name="Background" type="Node2D" parent="."]
 
 [node name="Polygon2D" type="Polygon2D" parent="Background"]
-color = Color(0, 0, 0, 1)
+position = Vector2(-1446, -546)
+scale = Vector2(3.40392, 3.40392)
 polygon = PackedVector2Array(-46, -40, 1200, -41, 1198, 678, -33, 678)
 
-[node name="MapMakerIsometric" parent="." instance=ExtResource("1_jib66")]
-position = Vector2(-496.143, 163.688)
-
-[node name="Floors" parent="MapMakerIsometric" index="0"]
-layer_0/tile_data = PackedInt32Array(196609, 65537, 2, 131078, 65537, 2, 3, 65537, 2, 4, 65537, 2, 65540, 65537, 2, 65539, 65537, 2, 65538, 3, 65536, 131074, 65537, 2, 65537, 3, 65536, 131075, 65537, 2, 131076, 65537, 2, 196611, 65537, 2, 262148, 65537, 2, 327684, 65537, 2, 327683, 65537, 2, 262147, 65537, 2, 196610, 65537, 2, 262146, 65537, 2, 131073, 65537, 2, 131077, 65537, 2, 196613, 65537, 2, 262150, 65537, 2, 262149, 65537, 2, 196612, 65537, 2, 393220, 65537, 2, 458756, 65537, 2, 524293, 65537, 2, 458757, 65537, 2, 524294, 65537, 2, 458758, 65537, 2, 393222, 65537, 2, 327685, 65537, 2, 393221, 65537, 2, 393223, 65537, 2, 458759, 65537, 2, 393224, 65537, 2, 327688, 65537, 2, 327687, 65537, 2, 262151, 65537, 2, -131072, 65537, 2, -65536, 65537, 2, 0, 3, 65536, 65536, 3, 65536, 131072, 65537, 2, 196608, 65537, 2, 262144, 65537, 2, 327680, 65537, 2, 393216, 65537, 2, 458752, 65537, 2, 524288, 65537, 2, 589824, 65537, 2, 655360, 65537, 2, -131071, 65537, 2, -65535, 65537, 2, 1, 3, 65536, 262145, 65537, 2, 327681, 65537, 2, 393217, 65537, 2, 458753, 65537, 2, 524289, 65537, 2, 589825, 65537, 2, 655361, 65537, 2, -131070, 65537, 2, -65534, 65537, 2, 2, 3, 65536, 327682, 65537, 2, 393218, 65537, 2, 458754, 65537, 2, 524290, 65537, 2, 589826, 65537, 2, 655362, 65537, 2, -131069, 65537, 2, -65533, 65537, 2, 393219, 65537, 2, 458755, 65537, 2, 524291, 65537, 2, 589827, 65537, 2, 655363, 65537, 2, -131068, 65537, 2, -65532, 65537, 2, 524292, 65537, 2, 589828, 65537, 2, 655364, 65537, 2, -131067, 65537, 2, -65531, 65537, 2, 5, 65537, 2, 65541, 65537, 2, 589829, 65537, 2, 655365, 65537, 2, -131066, 65537, 2, -65530, 65537, 2, 6, 65537, 2, 65542, 65537, 2, 196614, 65537, 2, 327686, 65537, 2, 589830, 65537, 2, 655366, 65537, 2, -131065, 65537, 2, -65529, 65537, 2, 7, 65537, 2, 65543, 65537, 2, 131079, 65537, 2, 196615, 65537, 2, 524295, 65537, 2, 589831, 65537, 2, 655367, 65537, 2, -131064, 65537, 2, -65528, 65537, 2, 8, 65537, 2, 65544, 65537, 2, 131080, 65537, 2, 196616, 65537, 2, 262152, 65537, 2, 458760, 65537, 2, 524296, 65537, 2, 589832, 65537, 2, 655368, 65537, 2, -131063, 65537, 2, -65527, 65537, 2, 9, 65537, 2, 65545, 65537, 2, 131081, 65537, 2, 196617, 65537, 2, 262153, 65537, 2, 327689, 65537, 2, 393225, 65537, 2, 458761, 65537, 2, 524297, 65537, 2, 589833, 65537, 2, 655369, 65537, 2, -131062, 65537, 2, -65526, 65537, 2, 10, 65537, 2, 65546, 65537, 2, 131082, 65537, 2, 196618, 65537, 2, 262154, 65537, 2, 327690, 65537, 2, 393226, 65537, 2, 458762, 65537, 2, 524298, 65537, 2, 589834, 65537, 2, 655370, 65537, 2, -196609, 65537, 2, -131073, 65537, 2, -65537, 65537, 2, -1, 65537, 2, 65535, 65537, 2, 131071, 65537, 2, 196607, 65537, 2, 262143, 65537, 2, 327679, 65537, 2, 393215, 65537, 2, 458751, 65537, 2, 524287, 65537, 2, 589823, 65537, 2, 655359, 65537, 2, 720895, 65537, 2, 786431, 65537, 2, 851967, 65537, 2, 917503, 65537, 2, 983039, 65537, 2, -262144, 65537, 2, -196608, 65537, 2, 720896, 65537, 2, 786432, 65537, 2, 851968, 65537, 2, 917504, 65537, 2, -262143, 65537, 2, -196607, 65537, 2, 720897, 65537, 2, 786433, 65537, 2, 851969, 65537, 2, 917505, 65537, 2, -262142, 65537, 2, -196606, 65537, 2, 720898, 65537, 2, 786434, 65537, 2, 851970, 65537, 2, 917506, 65537, 2, -262141, 65537, 2, -196605, 65537, 2, 720899, 65537, 2, 786435, 65537, 2, 851971, 65537, 2, 917507, 65537, 2, -262140, 65537, 2, -196604, 65537, 2, 720900, 65537, 2, 786436, 65537, 2, 851972, 65537, 2, 917508, 65537, 2, -262139, 65537, 2, -196603, 65537, 2, 720901, 65537, 2, 786437, 65537, 2, 851973, 65537, 2, 917509, 65537, 2, -262138, 65537, 2, -196602, 65537, 2, 720902, 65537, 2, 786438, 65537, 2, 851974, 65537, 2, 917510, 65537, 2, -262137, 65537, 2, -196601, 65537, 2, 720903, 65537, 2, 786439, 65537, 2, 851975, 65537, 2, 917511, 65537, 2, -262136, 65537, 2, -196600, 65537, 2, 720904, 65537, 2, 786440, 65537, 2, 851976, 65537, 2, 917512, 65537, 2, -262135, 65537, 2, -196599, 65537, 2, 720905, 65537, 2, 786441, 65537, 2, 851977, 65537, 2, 917513, 65537, 2, -262134, 65537, 2, -196598, 65537, 2, 720906, 65537, 2, 786442, 65537, 2, 851978, 65537, 2, 917514, 65537, 2, -262133, 65537, 2, -196597, 65537, 2, -131061, 65537, 2, -65525, 65537, 2, 11, 65537, 2, 65547, 65537, 2, 131083, 65537, 2, 196619, 65537, 2, 262155, 65537, 2, 327691, 65537, 2, 393227, 65537, 2, 458763, 65537, 2, 524299, 65537, 2, 589835, 65537, 2, 655371, 65537, 2, 720907, 65537, 2, 786443, 65537, 2, 851979, 65537, 2, 917515, 65537, 2, -262132, 65537, 2, -196596, 65537, 2, -131060, 65537, 2, -65524, 65537, 2, 12, 65537, 2, 65548, 65537, 2, 131084, 65537, 2, 196620, 65537, 2, 262156, 65537, 2, 327692, 65537, 2, 393228, 65537, 2, 458764, 65537, 2, 524300, 65537, 2, 589836, 65537, 2, 655372, 65537, 2, 720908, 65537, 2, 786444, 65537, 2, 851980, 65537, 2, 917516, 65537, 2)
-
-[node name="Walls" parent="MapMakerIsometric" index="1"]
-layer_0/tile_data = PackedInt32Array(0, 1, 0, 1, 1, 0, 2, 1, 0, 3, 1, 0, 4, 1, 0, 5, 1, 0, 6, 1, 0, 7, 1, 0, 8, 1, 0, 9, 1, 0, 10, 1, 0, 11, 1, 0, 12, 1, 0, 13, 1, 0, 65548, 1, 0, 65547, 1, 0, 65546, 1, 0, 65545, 1, 0, 65544, 1, 0, 65543, 1, 0, 65542, 1, 0, 65541, 1, 0, 65540, 1, 0, 65539, 1, 0, 65538, 1, 0, 65537, 1, 0, 65536, 1, 0, 131071, 1, 0, 196607, 1, 0, 262143, 1, 0, 327679, 1, 0, 393215, 1, 0, 458751, 1, 0, 524287, 1, 0, 589823, 1, 0, 655359, 1, 0, 720895, 1, 0, 786431, 1, 0, 851967, 1, 0, 917503, 1, 0, 983039, 1, 0, 1048575, 1, 0, 1114111, 1, 0, 1179647, 1, 0, 1245183, 1, 0, 1310719, 1, 0, 1376255, 1, 0, 1441791, 1, 0, 1507327, 1, 0, 1572863, 1, 0, 1638399, 1, 0, 1703935, 1, 0, 1769471, 1, 0, 1835007, 1, 0, 1900543, 1, 0, 1966079, 1, 0, 2031615, 1, 0, 2097151, 1, 0, 2162687, 1, 0, 2228223, 1, 0, 2293759, 1, 0, 2359295, 1, 0, 2293760, 1, 0, 2293761, 1, 0, 2293762, 1, 0, 2293763, 1, 0, 2293764, 1, 0, 2359301, 1, 0, 2359302, 1, 0, 2359303, 1, 0, 2359304, 1, 0, 2359305, 1, 0, 2359306, 1, 0, 2359307, 1, 0, 2359308, 1, 0, 2359309, 1, 0, 2359296, 1, 0, 2359297, 1, 0, 2359298, 1, 0, 2359299, 1, 0, 2359300, 1, 0, 2424837, 1, 0, 2424838, 1, 0, 2424839, 1, 0, 2424840, 1, 0, 2424841, 1, 0, 2424842, 1, 0, 2424843, 1, 0, 2424844, 1, 0, 2424845, 1, 0, 2293773, 1, 0, 2228237, 1, 0, 2162701, 1, 0, 2097165, 1, 0, 2031629, 1, 0, 1966093, 1, 0, 1900557, 1, 0, 1835021, 1, 0, 1769485, 1, 0, 1703949, 1, 0, 1638413, 1, 0, 1572877, 1, 0, 1507341, 1, 0, 1441805, 1, 0, 1376269, 1, 0, 1310733, 1, 0, 1245197, 1, 0, 1114125, 1, 0, 1048589, 1, 0, 983053, 1, 0, 917517, 1, 0, 851981, 1, 0, 786445, 1, 0, 720909, 1, 0, 655373, 1, 0, 589837, 1, 0, 524301, 1, 0, 458765, 1, 0, 393229, 1, 0, 327693, 1, 0, 262157, 1, 0, 196621, 1, 0, 131085, 1, 0, 65549, 1, 0, 131086, 1, 0, 131072, 1, 0, 196608, 1, 0, 262145, 1, 0, 327681, 1, 0, 393218, 1, 0, 458754, 1, 0, 524291, 1, 0, 589827, 1, 0, 655364, 1, 0, 393222, 1, 0, 1245193, 1, 0, 1310729, 1, 0, 1441800, 1, 0, 1507335, 1, 0, 1638407, 1, 0, 1703944, 1, 0, 1769480, 1, 0, 1835017, 1, 0, 1900553, 1, 0, 1966090, 1, 0, 1900554, 1, 0, 1835019, 1, 0, 1769483, 1, 0, 1703948, 1, 0, 1638412, 1, 0, 1572876, 1, 0, 1507339, 1, 0, 1441803, 1, 0, 1376266, 1, 0, 1310730, 1, 0, 1835016, 1, 0, 1966087, 1, 0, 2031622, 1, 0, 2097158, 1, 0, 2162693, 1, 0, 2228229, 1, 0, 1310720, 1, 0, 1310721, 1, 0, 1310722, 1, 0, 1310723, 1, 0, 1376258, 1, 0, 1376257, 1, 0, 1376256, 1, 0, 1507330, 1, 0, 1572867, 1, 0, 1835011, 1, 0, 1966083, 1, 0, 2097155, 1, 0, 2228227, 1, 0, 131081, 1, 0, 196616, 1, 0, 262153, 1, 0, 327688, 1, 0, 393225, 1, 0, 458760, 1, 0, 524296, 1, 0, 589832, 1, 0, 655368, 1, 0, 720904, 1, 0, 786440, 1, 0, 1179658, 1, 0, 1114122, 1, 0, 1048586, 1, 0, 851976, 1, 0)
-
-[node name="ScreenRimA" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(628, 301)
-scale = Vector2(0.676924, 0.476924)
-texture = ExtResource("2_31f2v")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="ScreenRimA"]
-libraries = {
-"": SubResource("AnimationLibrary_ggssi")
-}
-autoplay = "Pulse"
-speed_scale = 1.5
-
-[node name="Static_PointLight" type="PointLight2D" parent="."]
-top_level = true
-position = Vector2(775, 473)
-color = Color(1, 0.760784, 0.552941, 1)
-energy = 0.25
-shadow_enabled = true
-shadow_filter = 2
-texture = ExtResource("4_6t3ny")
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Static_PointLight"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Static_PointLight/StaticBody2D"]
-shape = SubResource("CircleShape2D_ohc2c")
-
 [node name="AnimLightA" type="PointLight2D" parent="."]
-position = Vector2(436, 530)
+position = Vector2(-86, 619)
 color = Color(0.807843, 0, 0.780392, 1)
 energy = 0.25
 shadow_enabled = true
@@ -226,14 +74,15 @@ libraries = {
 speed_scale = 0.15
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.482353, 0.533333, 0.733333, 1)
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
-rotation = 84.1297
+position = Vector2(330, 137)
+rotation = 464.268
 color = Color(0.0823529, 0.0823529, 0.0823529, 1)
 shadow_enabled = true
 
 [node name="CapsuleGreybox" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(131, 617)
 texture = ExtResource("5_p3s2c")
 
@@ -245,12 +94,45 @@ offset_left = -438.0
 offset_top = 381.0
 offset_right = -238.0
 offset_bottom = 681.0
-text = "insert lore here"
+text = "If you see this text, a class 4 memetic kill agent has been issued 
+you have 30 min to consult an HDF memeticist agent of S4 or above or face
+the concequences. 
+"
 
-[node name="RN_Jesus" type="Node2D" parent="."]
-position = Vector2(170, 815)
-script = SubResource("GDScript_wpeo8")
+[node name="Interactables" type="Node2D" parent="."]
 
-[node name="Sprite2D" type="Sprite2D" parent="RN_Jesus"]
+[node name="Lamp" type="Sprite2D" parent="Interactables"]
+position = Vector2(254, 442)
+texture = ExtResource("15_mcof8")
 
-[editable path="MapMakerIsometric"]
+[node name="Static_PointLight" type="PointLight2D" parent="Interactables/Lamp"]
+top_level = true
+position = Vector2(243, 464)
+color = Color(1, 0.760784, 0.552941, 1)
+energy = 0.25
+shadow_enabled = true
+shadow_filter = 2
+texture = ExtResource("4_6t3ny")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Interactables/Lamp/Static_PointLight"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/Lamp/Static_PointLight/StaticBody2D"]
+shape = SubResource("CircleShape2D_ohc2c")
+
+[node name="Interactable_object" parent="Interactables" instance=ExtResource("7_l4dob")]
+position = Vector2(547, 650)
+Item_name = "Family Photos"
+item_description = "A picture of your parents"
+
+[node name="Puzzle_Keys" type="Node2D" parent="."]
+
+[node name="Key0" parent="Puzzle_Keys" instance=ExtResource("7_5eaks")]
+position = Vector2(145, 305)
+
+[node name="Key1" parent="Puzzle_Keys" instance=ExtResource("8_eidqk")]
+position = Vector2(198, 304)
+
+[node name="Locks" type="Node2D" parent="."]
+
+[node name="Locked_Door" parent="Locks" instance=ExtResource("9_d45tw")]
+position = Vector2(838, 294)
