@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemConfiguration" load_steps=3 format=3 uid="uid://dks18ocm0tfef"]
+
+[ext_resource type="Script" path="res://Ryr/Modules/ItemConfiguration.gd" id="1_2ub03"]
+[ext_resource type="Texture2D" uid="uid://cyp1jk6dc101a" path="res://Ryr/Assets/isometric tileset/separated images/tile_069.png" id="1_vugam"]
+
+[resource]
+script = ExtResource("1_2ub03")
+item_id = 2
+item_name = "Ordinary Note"
+description = "Something written here....."
+icon = ExtResource("1_vugam")
+sprite = ExtResource("1_vugam")

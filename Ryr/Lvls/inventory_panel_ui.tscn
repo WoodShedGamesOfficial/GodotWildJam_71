@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7hfoh4v5thi"]
+
+[ext_resource type="Script" path="res://Ryr/Modules/inventory_panel.gd" id="1_xuqf5"]
+[ext_resource type="PackedScene" uid="uid://cjs7uimnjiwgn" path="res://Ryr/Lvls/item_ui.tscn" id="2_86318"]
+
+[node name="InventoryPanelUI" type="Control" node_paths=PackedStringArray("item_ui_list")]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 1
+script = ExtResource("1_xuqf5")
+item_ui_list = [NodePath("HBoxContainer/ItemUI"), NodePath("HBoxContainer/ItemUI2"), NodePath("HBoxContainer/ItemUI3"), NodePath("HBoxContainer/ItemUI4"), NodePath("HBoxContainer/ItemUI5"), NodePath("HBoxContainer/ItemUI6"), NodePath("HBoxContainer/ItemUI7"), NodePath("HBoxContainer/ItemUI8")]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -500.0
+offset_top = -80.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/separation = 5
+alignment = 2
+
+[node name="ItemUI" parent="HBoxContainer" instance=ExtResource("2_86318")]
+layout_mode = 2
+
+[node name="ItemUI2" parent="HBoxContainer" instance=ExtResource("2_86318")]
+layout_mode = 2
+
+[node name="ItemUI3" parent="HBoxContainer" instance=ExtResource("2_86318")]
+layout_mode = 2
+
+[node name="ItemUI4" parent="HBoxContainer" instance=ExtResource("2_86318")]
+layout_mode = 2
+
+[node name="ItemUI5" parent="HBoxContainer" instance=ExtResource("2_86318")]
+layout_mode = 2
+
+[node name="ItemUI6" parent="HBoxContainer" instance=ExtResource("2_86318")]
+layout_mode = 2
+
+[node name="ItemUI7" parent="HBoxContainer" instance=ExtResource("2_86318")]
+layout_mode = 2
+
+[node name="ItemUI8" parent="HBoxContainer" instance=ExtResource("2_86318")]
+layout_mode = 2

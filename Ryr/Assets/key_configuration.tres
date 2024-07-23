@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemConfiguration" load_steps=3 format=3 uid="uid://svxk4e8jhjsh"]
+
+[ext_resource type="Script" path="res://Ryr/Modules/ItemConfiguration.gd" id="1_ffpvx"]
+[ext_resource type="Texture2D" uid="uid://dpg88rma8e7as" path="res://Ryr/Assets/isometric tileset/separated images/tile_048.png" id="1_hqoqn"]
+
+[resource]
+script = ExtResource("1_ffpvx")
+item_id = 1
+item_name = "Ordinary Key"
+description = "It is just an ordinary key....."
+icon = ExtResource("1_hqoqn")
+sprite = ExtResource("1_hqoqn")

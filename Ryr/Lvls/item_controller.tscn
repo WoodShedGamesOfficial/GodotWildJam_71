@@ -1,0 +1,96 @@
+[gd_scene load_steps=8 format=3 uid="uid://dregduxx5nhed"]
+
+[ext_resource type="Script" path="res://Ryr/Modules/item_controller.gd" id="1_cxak0"]
+[ext_resource type="Texture2D" uid="uid://dpg88rma8e7as" path="res://Ryr/Assets/isometric tileset/separated images/tile_048.png" id="2_si2qa"]
+[ext_resource type="Script" path="res://Ryr/Modules/item_interactable_area.gd" id="3_wnijl"]
+
+[sub_resource type="Animation" id="Animation_yhgh4"]
+resource_name = "Idle"
+length = 2.0
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(-1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Model:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -2.5)]
+}
+
+[sub_resource type="Animation" id="Animation_b8woh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.1, 0.1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Model:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4trtr"]
+_data = {
+"Idle": SubResource("Animation_yhgh4"),
+"RESET": SubResource("Animation_b8woh")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8htun"]
+size = Vector2(14, 9)
+
+[node name="PickUpItem" type="Node2D" node_paths=PackedStringArray("area")]
+position = Vector2(643, 346)
+script = ExtResource("1_cxak0")
+area = NodePath("InteractableArea")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4trtr")
+}
+autoplay = "Idle"
+
+[node name="Model" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_si2qa")
+
+[node name="InteractableArea" type="Area2D" parent="."]
+collision_layer = 524288
+collision_mask = 0
+script = ExtResource("3_wnijl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractableArea"]
+position = Vector2(0, 2.5)
+shape = SubResource("RectangleShape2D_8htun")
+
+[connection signal="on_interacted" from="InteractableArea" to="." method="on_interacted"]
