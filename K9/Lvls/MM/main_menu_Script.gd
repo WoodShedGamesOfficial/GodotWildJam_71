@@ -13,7 +13,7 @@ func _ready():
 	
 	$AnimationPlayer.play('Fade')
 	
-	
+	get_tree().paused = false
 	pass # Replace with function body.
 
 func start_the_game():
@@ -47,7 +47,10 @@ func show_start_menu(): # just does it all
 	pass
 
 func toggle_credits_panel():
-	Credits_Screen.visible = true
+	if Credits_Screen.visible != true:
+		Credits_Screen.visible = true
+	else:
+		Credits_Screen.visible = false
 	pass
 
 

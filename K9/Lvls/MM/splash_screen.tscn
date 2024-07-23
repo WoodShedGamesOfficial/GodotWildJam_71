@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://cxrttkr0b2i0x"]
+[gd_scene load_steps=9 format=3 uid="uid://cxrttkr0b2i0x"]
 
 [ext_resource type="Script" path="res://K9/Lvls/MM/splash_screen_Script.gd" id="1_jhhkt"]
 [ext_resource type="Texture2D" uid="uid://b16hak6n7hj2q" path="res://K9/Modules/2D/WoodShedLogoB_4.png" id="1_pccjw"]
@@ -39,6 +39,42 @@ _data = {
 "RESET": SubResource("Animation_7b2dl")
 }
 
+[sub_resource type="Animation" id="Animation_bec1p"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.29948, -0.00235408)]
+}
+
+[sub_resource type="Animation" id="Animation_hr2rx"]
+resource_name = "blip"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1.29948, -0.00235408), Vector2(1.14974, 0.498823), Vector2(1.29948, -0.00235408), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_v6doj"]
+_data = {
+"RESET": SubResource("Animation_bec1p"),
+"blip": SubResource("Animation_hr2rx")
+}
+
 [node name="SplashScreen" type="Node2D"]
 script = ExtResource("1_jhhkt")
 
@@ -57,3 +93,30 @@ libraries = {
 }
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
+
+[node name="Label" type="Label" parent="."]
+modulate = Color(1, 0.247059, 0, 1)
+offset_right = 40.0
+offset_bottom = 23.0
+text = "GWJ #71: 
+un-intended consequences"
+
+[node name="Label2" type="Label" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 487.0
+offset_top = 486.0
+offset_right = 650.0
+offset_bottom = 509.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(1.29948, -0.00235408)
+text = "[WOODSHED GAMES]"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Label2"]
+libraries = {
+"": SubResource("AnimationLibrary_v6doj")
+}

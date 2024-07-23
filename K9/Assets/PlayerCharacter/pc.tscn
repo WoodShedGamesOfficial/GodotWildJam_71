@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://v5v3d7sdtm24"]
+[gd_scene load_steps=35 format=3 uid="uid://v5v3d7sdtm24"]
 
 [ext_resource type="Script" path="res://K9/Assets/PlayerCharacter/pc_Script.gd" id="1_hpfj1"]
 [ext_resource type="Texture2D" uid="uid://dkodph71yfleb" path="res://K9/Modules/2D/CapsuleGreybox.png" id="2_ammco"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://cuw515eqsysd" path="res://KHZ/Modules/2D/Left 2@3x.png" id="12_kwkun"]
 [ext_resource type="Texture2D" uid="uid://l3xyt6fhiipi" path="res://KHZ/Modules/2D/Right 1@3x.png" id="13_yoo1x"]
 [ext_resource type="Texture2D" uid="uid://doiddspeobbih" path="res://KHZ/Modules/2D/Right 2@3x.png" id="14_ap8qb"]
+[ext_resource type="Texture2D" uid="uid://6uu2jaa3s5oc" path="res://K9/Modules/2D/PlainCircle.png" id="18_wqn6y"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ivhgk"]
 radius = 23.0217
@@ -176,24 +177,68 @@ _data = {
 resource_name = "SeconfdWindScript"
 script/source = "extends Control
 
+
+@onready var texture_progress_bar = $TextureProgressBar
+@onready var life : int
+
 signal player_failed
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	life = 75
 	$Second_wind_timer.connect('timeout', death)
-	
+	start_second_wind()
 	pass # Replace with function body.
 	
 
+func _process(delta):
+	texture_progress_bar.value = life
+	
+	if $Second_wind_timer.is_stopped() == false:
+		drain_life()
+	
+	if life <= 0:
+		death()
+	
+	if life >= 100:
+		K9Globals.player_sleep = 100
+		visible = false
+		get_tree().paused = false
+	pass
+
 func start_second_wind():
+	#life = 100
 	$Second_wind_timer.start()
+	
+
 	pass
 	
+
+func _input(event):
+	if Input.is_action_just_pressed(\"Player_interact\"):
+		life += 10.25
+	pass
+	
+
+
+func drain_life():
+	life -= 0.005
+	
+	#if Input.is_action_just_pressed(\"Player_interact\"):
+		#life += 10.25
+		#print('losing life' + 'fought the sleep')
+	pass
 
 func death():
 	emit_signal('player_failed')
 	pass
 	
+
+@onready var MM_P = load(\"res://K9/Lvls/MM/main_menu.tscn\")
+
+func _on_button_pressed():
+	get_tree().change_scene_to_packed(MM_P)
+	pass # Replace with function body.
 "
 
 [sub_resource type="Animation" id="Animation_smsdg"]
@@ -233,6 +278,119 @@ _data = {
 "RESET": SubResource("Animation_qphwe")
 }
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_j6c3u"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 526.05
+gravity = Vector3(0, 0, 0)
+linear_accel_min = -100.0
+radial_accel_min = -100.0
+radial_accel_max = -100.0
+tangential_accel_min = -100.0
+tangential_accel_max = -100.0
+scale_min = 0.01
+scale_max = 0.05
+
+[sub_resource type="Animation" id="Animation_ble7m"]
+resource_name = "Creepy"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScreenRimA:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 0.427451, 1, 1), Color(1, 0.427451, 1, 1), Color(0.564706, 0.694118, 0.984314, 1), Color(1, 0.427451, 1, 1), Color(0.705882, 0.737255, 0, 1), Color(1, 0.427451, 1, 1), Color(1, 0.427451, 1, 1), Color(1, 0.427451, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationPlayer:speed_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.05]
+}
+
+[sub_resource type="Animation" id="Animation_15ij8"]
+resource_name = "Default"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScreenRimA:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ScreenRimA:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_gud5j"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScreenRimA:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ScreenRimA:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationPlayer:speed_scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.25]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bv0hx"]
+_data = {
+"Creepy": SubResource("Animation_ble7m"),
+"Default": SubResource("Animation_15ij8"),
+"RESET": SubResource("Animation_gud5j")
+}
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ban18"]
 bg_color = Color(0.447059, 0.298039, 1, 1)
 border_width_left = 3
@@ -243,7 +401,7 @@ border_color = Color(1, 0.00392157, 0, 1)
 border_blend = true
 
 [node name="PC" type="CharacterBody2D"]
-collision_mask = 14
+collision_mask = 12
 script = ExtResource("1_hpfj1")
 
 [node name="CapsuleGreybox" type="Sprite2D" parent="."]
@@ -384,20 +542,131 @@ tint_progress = Color(1, 0, 0, 1)
 libraries = {
 "": SubResource("AnimationLibrary_tvdvg")
 }
+autoplay = "Pulse"
 
 [node name="Second_wind_timer" type="Timer" parent="CanvasLayer/PC_UI/DeathIsntEndScreen"]
 wait_time = 15.0
 one_shot = true
 
+[node name="Button" type="Button" parent="CanvasLayer/PC_UI/DeathIsntEndScreen"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = -225.0
+offset_right = 92.0
+offset_bottom = -194.0
+text = "Give up"
+
+[node name="Label" type="Label" parent="CanvasLayer/PC_UI/DeathIsntEndScreen"]
+layout_mode = 0
+offset_left = -173.0
+offset_top = -147.0
+offset_right = -59.0
+offset_bottom = -124.0
+scale = Vector2(4.0858, 4.0858)
+theme_override_colors/font_color = Color(0.437799, 0.616361, 1, 1)
+text = "SECOND WIND"
+
+[node name="Label2" type="Label" parent="CanvasLayer/PC_UI/DeathIsntEndScreen"]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 148.0
+offset_right = 143.0
+offset_bottom = 171.0
+theme_override_colors/font_color = Color(0.437799, 0.616361, 1, 1)
+text = "Tap 'E' to wake up!"
+
 [node name="Controlls" type="Label" parent="CanvasLayer/PC_UI"]
 layout_mode = 0
-offset_left = 164.0
-offset_top = 566.0
-offset_right = 265.0
-offset_bottom = 641.0
+offset_left = 160.0
+offset_top = 568.0
+offset_right = 261.0
+offset_bottom = 643.0
 text = "X = task
-F = Flashlight
+
 E = Interact"
+
+[node name="AmbientScreenFX" type="Control" parent="CanvasLayer/PC_UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ChargeUpFX" type="GPUParticles2D" parent="CanvasLayer/PC_UI/AmbientScreenFX"]
+visible = false
+position = Vector2(-24, 20)
+amount = 200
+process_material = SubResource("ParticleProcessMaterial_j6c3u")
+texture = ExtResource("18_wqn6y")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/PC_UI/AmbientScreenFX"]
+libraries = {
+"": SubResource("AnimationLibrary_bv0hx")
+}
+speed_scale = 0.25
+
+[node name="ScreenRimA" type="Sprite2D" parent="CanvasLayer/PC_UI/AmbientScreenFX"]
+position = Vector2(596, 324)
+texture = ExtResource("4_31vav")
+
+[node name="YouDied" type="Panel" parent="CanvasLayer/PC_UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -74.0
+offset_top = 34.0
+offset_right = 126.0
+offset_bottom = 74.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/PC_UI/YouDied"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "You never woke up,
+game over"
+horizontal_alignment = 1
+
+[node name="You win!" type="Panel" parent="CanvasLayer/PC_UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -200.0
+offset_right = 150.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/PC_UI/You win!"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "You woke up and made it out of your warped reality of a home but upon leaving your home you realize you are no longer inside the well in which you lived. The landscape before resembles nothing you've ever seen in your life. Your plans to get off world have failed, for now. 
+
+Thank you for playing our game and we hope you join the WsG newsletter, and enjoy the rest of the jam!"
 
 [node name="SleepTimer" type="Timer" parent="."]
 
@@ -419,3 +688,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_ban18")
 vertical_alignment = 1
+
+[connection signal="player_failed" from="CanvasLayer/PC_UI/DeathIsntEndScreen" to="." method="_on_death_isnt_end_screen_player_failed"]
+[connection signal="pressed" from="CanvasLayer/PC_UI/DeathIsntEndScreen/Button" to="CanvasLayer/PC_UI/DeathIsntEndScreen" method="_on_button_pressed"]

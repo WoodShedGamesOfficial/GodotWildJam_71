@@ -4,6 +4,12 @@ extends Node2D
 @export_multiline var key_description  = 'Key description here'
 @onready var pickup_area = $Sprite2D/PickupArea
 
+@export_multiline var Pickup_text : PackedStringArray = [
+	"oh man 32 missed messages?",
+	"Thats weird I usually have signal here.",
+	"I should check my calendar in the kitchen",
+	]
+
 signal picked_up_key
 
 # Called when the node enters the scene tree for the first time.
@@ -18,13 +24,32 @@ func _process(delta):
 
 @export var text_to_read : String
 func pickup_key(body):
+	#var player = get_tree().current_scene.get_node_or_null('PC')
 	
 	if body.is_in_group('player'):
 		K9GlobalItemList.key_list[key_name] = key_description
-		if body.has_method('show_dialogue_box'):
-			body.show_dialogue_box(text_to_read)
+		K9GlobalItemList.key_array.append(key_name)
 		
-		print('keys list: ' + str(K9GlobalItemList.key_list))
-		queue_free()
+		play_dialogue()
+		$Sprite2D/PickupArea.monitoring = false
+		visible = false
+		
+		#print('keys list: ' + str(K9GlobalItemList.key_list))
+		#queue_free()
+	pass
+	
+func play_dialogue():
+	var player = get_tree().current_scene.get_node_or_null('PC')
+	var current_line : int
+	var next_line : int
+	
+	current_line = 0
+	for lines in Pickup_text.size():
+		player.show_dialogue_box(Pickup_text[current_line])
+		next_line = current_line + 1
+		await get_tree().create_timer(5.0).timeout
+		current_line = next_line
+	
+	
 	pass
 	

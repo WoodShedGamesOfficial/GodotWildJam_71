@@ -14,17 +14,24 @@ extends CharacterBody2D
 }
 #const JUMP_VELOCITY = -400.0
 
-var sleep : float 
+var sleep : float = K9Globals.player_sleep
 
 var player_state = ['alive', 'dying', 'dead']
 var current_player_state
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 #var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
+var is_speaking : bool
+
+signal dialogue_finished
+signal done_healing
+
 func _ready():
+	K9Globals.player_sleep = PC_Stats["sleep_max"]
+	
 	add_to_group("player")
 	
-	$AnimatedSprite2D.play('default')
+	$AnimatedSprite2D.play('Idle')
 	
 	sleep = PC_Stats['sleep_max']
 	$SleepTimer.connect('timeout', sleep_tick)
@@ -64,7 +71,7 @@ func _process(delta):
 	#monitor_mouse_position()
 	#-------
 	
-	$CanvasLayer/PC_UI/SleepBar.value = sleep
+	$CanvasLayer/PC_UI/SleepBar.value = K9Globals.player_sleep
 	
 	#--------- Animations
 	
@@ -73,13 +80,19 @@ func _process(delta):
 		#$AnimatedSprite2D.play("Walk")
 	#else:
 		#$AnimatedSprite2D.play("default")
-	 
 	
 	#---
 	#light follows mouse_pos
 	$PCHand.look_at(get_global_mouse_position())
 	
+	#K9Globals.player_sleep = sleep 
+	#if K9Globals.player_sleep > sleep:
+		#sleep = K9Globals.player_sleep
 	
+	if K9Globals.player_sleep <= 0:
+		lose_conciousness()
+	
+	K9Globals.player_pos = position
 	pass
 	
 
@@ -109,6 +122,8 @@ func show_dialogue_box(text_to_read):
 	D_Box_Label.text = str(text_to_read)
 	await get_tree().create_timer(5.0).timeout
 	D_Box.visible = false
+	
+	emit_signal('dialogue_finished')
 	pass
 	
 
@@ -132,6 +147,7 @@ func sleep_tick():
 	if sleep > 1 and is_dying != true:
 		current_player_state = player_state[0]
 		sleep -= PC_Stats['sleep_decay_rate']
+		K9Globals.player_sleep -= PC_Stats['sleep_decay_rate']
 		
 	elif sleep < 0 and is_dying != true:
 		current_player_state = player_state[1]
@@ -175,8 +191,13 @@ func second_wind():
 	pass
 	
 
+var MM_P : PackedScene = load("res://K9/Lvls/MM/main_menu.tscn")
+
 func death():
-	var MM_P : PackedScene = load("res://K9/Lvls/MM/main_menu.tscn")
+	
+	$CanvasLayer/PC_UI/YouDied.visible = true
+	
+	await get_tree().create_timer(3.0).timeout
 	
 	get_tree().change_scene_to_packed(MM_P)
 	
@@ -186,8 +207,31 @@ func death():
 	
 
 func show_current_task_hint(text_to_display):
+	is_speaking = true
 	$MarginContainer.visible = true
 	$MarginContainer/Label.text = str(text_to_display)
 	await get_tree().create_timer(5.0).timeout
 	$MarginContainer.visible = false
+	is_speaking = false
 	pass
+
+func lose_conciousness():
+	K9Globals.player_sleep = 50
+	get_tree().paused = true
+	$CanvasLayer/PC_UI/DeathIsntEndScreen.visible = true
+	
+	if K9Globals.player_sleep <= 0:
+		death()
+	pass
+	
+
+func drain_sleep():
+	K9Globals.player_sleep -= 0.05
+	print(str(K9Globals.player_sleep))
+	pass
+
+
+func _on_death_isnt_end_screen_player_failed():
+	await get_tree().create_timer(5.0)
+	death()
+	pass # Replace with function body.

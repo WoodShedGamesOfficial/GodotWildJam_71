@@ -9,6 +9,7 @@
 script = ExtResource("1_8wrac")
 key_name = "Front_Door_Keys"
 key_description = "keys to the front door"
+Pickup_text = ["I found my keys to the front door!", "I better get that door open and get outta here", "This joke has gone on far enough"]
 text_to_read = "My keys to the front door, what the hell"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

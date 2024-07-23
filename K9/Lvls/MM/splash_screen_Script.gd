@@ -11,12 +11,16 @@ func _ready():
 func fade_in_fade_out():
 	anim.play("Fade")
 	
+	var MM_path: PackedScene = load("res://K9/Lvls/MM/main_menu.tscn")
 	var fade_wait_time: float = 3.0
+	
 	await (get_tree().create_timer(fade_wait_time).timeout)
 	
 	anim.play_backwards("Fade")
 	await anim.animation_finished
 	
-	var MM_path: PackedScene = load("res://K9/Lvls/MM/main_menu.tscn")
+	$Label2/AnimationPlayer.play('blip')
+	await $Label2/AnimationPlayer.animation_finished
+	
 	get_tree().change_scene_to_packed(MM_path)
 	pass

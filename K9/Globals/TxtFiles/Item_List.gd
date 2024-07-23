@@ -13,3 +13,5 @@ var item_spawn_list = {
 var key_list = {
 	#append keys
 }
+
+var key_array = []
